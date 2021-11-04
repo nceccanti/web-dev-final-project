@@ -4,7 +4,7 @@ export default class PlantList extends Component {
     render() {
         return (
         <div>
-            <h1>Dashboard</h1>
+            <h1>plant list</h1>
         </div>
         )
     }
