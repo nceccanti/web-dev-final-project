@@ -10,10 +10,12 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const email = req.body.email
+  const plants = req.body.plants
 
   const newUser = new User({
     username,
-    email
+    email,
+    plants
   });
 
   newUser.save()
@@ -31,7 +33,8 @@ router.route('/update/:id').post((req, res) => {
   User.findById(req.params.id)
     .then(user => {
       user.username = req.body.username;
-      plant.email = req.body.email;
+      user.email = req.body.email;
+      user.plants = req.body.email;
 
       user.save()
         .then(() => res.json('User updated!'))

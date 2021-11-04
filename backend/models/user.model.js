@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const plantSchema = new Schema({
+  plantname: { type: String, required: true },
+  watersperday: { type: Number, required: true },
+});
+
 const userSchema = new Schema({
   username: {
     type: String,
@@ -13,7 +18,8 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true
-  }
+  },
+  plants: [plantSchema],
 }, {
   timestamps: true,
 });

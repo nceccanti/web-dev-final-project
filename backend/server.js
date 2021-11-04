@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const nodemailer = require("nodemailer");
 const { google  } = require("googleapis");
 const schedule = require("node-schedule");
+const axios = require("axios");
 
 const CLIENT_ID = "446684941777-igvr17otdg241hlcs2iudfkjh235nstk.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
@@ -30,24 +31,22 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
 
-const exercisesRouter = require('./routes/plants');
 const usersRouter = require('./routes/users');
-const { notify } = require('./routes/plants');
 const { Component } = require('react');
 const { callbackPromise } = require('nodemailer/lib/shared');
+const { response } = require('express');
 
-app.use('/plants', exercisesRouter);
 app.use('/users', usersRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
-schedule.scheduleJob("0 8 * * *", () => {
-  console.log("yuh");
+schedule.scheduleJob("0 9 * * *", () => {
+  notifyAllUsers();
 })
 
-async function sendMail(client) {
+async function sendMail(client, subjectBody, textBody, htmlBody) {
   try {
     const accessToken = await oAuth2Client.getAccessToken();
     const transport = nodemailer.createTransport({
@@ -64,10 +63,10 @@ async function sendMail(client) {
 
     const mailOptions = {
       from: HYDROCLOCK_EMAIL,
-      to: "client",
-      subject: "This is a test email using HydroClock web api",
-      text: "Hello this a hydroclock email!",
-      html: "<h1>Hello this a hydroclock email!</h1>"
+      to: client,
+      subject: subjectBody,
+      text: textBody,
+      html: htmlBody
     };
 
     const result = transport.sendMail(mailOptions)
@@ -79,26 +78,22 @@ async function sendMail(client) {
   }
 }
 
-// sendMail().then(result => console.log("Email sent with API", result))
-// .catch(error => console.log(error.message));
-
-function getEmails() {
-  let x = new XMLHttpRequest();
-  x.onreadystatechange = function() {
-    if(x.readyState == 4 && x.status == 200) {
-      callbackPromise(x.responseText);
+function notifyAllUsers() {
+  var users = [];
+  axios.get("http://localhost:5000/users").then(res => {
+    if(res.data.length > 0) {
+     for(let i = 0; i < res.data.length; i++) {
+      let plantText = "";
+      let plantHTML = "";
+      for(let j = 0; j < res.data[i].plants.length; j++) {
+        plantText += res.data[i].plants[j].plantname + " needs be watered " + res.data[i].plants[j].watersperday + " times per day.\n";
+        plantHTML += "<li>" + res.data[i].plants[j].plantname + " needs be watered " + res.data[i].plants[j].watersperday + " times per day.</li>";
+      }
+      bodyText = "Hello " + res.data[i].username + "!\nThis is your daily reminder water your plants!  Here is your watering details for each plant:\n" + plantText + "\nHave a great day!\nSincerely,\nThe HydroClock Team";
+      bodyHTML = "<h1>Hello " + res.data[i].username + "!</h1><h2>This is your daily reminder water your plants!</h2><h3>Here is your watering details for each plant:<h3><ul>" + plantHTML + "</ul><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>";
+      subject = res.data[i].username + ": plant watering reminder.";
+      sendMail(res.data[i].email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data[i].email + " successfully.")).catch(error => console.log(error.essage));
+     }
     }
-  }
-  x.open("GET", "http://localhost:5000/users", false);
-  x.responseType("json");
-  x.send();
-}
-
-function notifyUsers () {
-  for(let i = 0; i < this.body.length; i++) {
-    let e = this.body.email;
-    //create body of text for each plant
-      //for each plant give info on how many times to water it
-    //sendMail(user, textbody)
-  }
+  });
 }
