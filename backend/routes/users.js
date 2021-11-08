@@ -32,9 +32,23 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
   User.findById(req.params.id)
     .then(user => {
-      user.username = req.body.username;
-      user.email = req.body.email;
-      user.plants = req.body.email;
+      if(req.body.username == null) {
+        user.username = user.username;
+      } else {
+        user.username = req.body.username;
+      }
+      
+      if(req.body.email == null) {
+        user.email = user.email;
+      } else {
+        user.email = req.body.email;
+      }
+      
+      if(req.body.plants == null) {
+        user.plants = user.plants;
+      } else {
+        user.plants = user.plants
+      }
 
       user.save()
         .then(() => res.json('User updated!'))
