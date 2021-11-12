@@ -6,10 +6,10 @@ const { google  } = require("googleapis");
 const schedule = require("node-schedule");
 const axios = require("axios");
 
-const CLIENT_ID = "446684941777-igvr17otdg241hlcs2iudfkjh235nstk.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
+const CLIENT_ID = "125774351731-ol5bf0rutel127u6vva0p4mum1fi6r8i.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04NpjFdEAYbBNCgYIARAAGAQSNwF-L9IrdEcUEQueV3N33mS00YFzVw1zMTuZSBZoqFV8KqTL8iva5c3qxwFR_QcXzwaP_TohdFA";
+const REFRESH_TOKEN = "1//04Xfqvkh7JkLMCgYIARAAGAQSNwF-L9IrOZhOSTidFSbLiTFYDnX-61OPfusNWR5MGHlgDs4Vmu9F6QUWYwAtuBagfdh4Wlj-hNo";
 const HYDROCLOCK_EMAIL = "officialhydroclock@gmail.com";
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
@@ -45,6 +45,8 @@ app.listen(port, () => {
 schedule.scheduleJob("0 9 * * *", () => {
   notifyAllUsers();
 })
+
+notifyAllUsers();
 
 async function sendMail(client, subjectBody, textBody, htmlBody) {
   try {
