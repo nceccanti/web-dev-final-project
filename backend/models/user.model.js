@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const plantSchema = new Schema({
-  plantname: { type: String, required: true },
-  watersperday: { type: Number, required: true },
+  plantname: { type: String },
+  watersperday: { type: Number },
 });
 
 const userSchema = new Schema({
@@ -16,6 +16,10 @@ const userSchema = new Schema({
     minlength: 3
   },
   email: {
+    type: String,
+    required: true
+  },
+  password: {
     type: String,
     required: true
   },

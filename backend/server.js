@@ -38,6 +38,9 @@ const { response } = require('express');
 
 app.use('/users', usersRouter);
 
+const userAuth = require("./routes/users.auth");
+app.use('/api/auth', userAuth);
+
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
@@ -45,8 +48,6 @@ app.listen(port, () => {
 schedule.scheduleJob("0 9 * * *", () => {
   notifyAllUsers();
 })
-
-//notifyAllUsers();
 
 async function sendMail(client, subjectBody, textBody, htmlBody) {
   try {
