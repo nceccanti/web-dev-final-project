@@ -46,7 +46,7 @@ schedule.scheduleJob("0 9 * * *", () => {
   notifyAllUsers();
 })
 
-notifyAllUsers();
+//notifyAllUsers();
 
 async function sendMail(client, subjectBody, textBody, htmlBody) {
   try {

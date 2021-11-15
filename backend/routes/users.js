@@ -47,7 +47,7 @@ router.route('/update/:id').post((req, res) => {
       if(req.body.plants == null) {
         user.plants = user.plants;
       } else {
-        user.plants = user.plants
+        user.plants = req.body.plants
       }
 
       user.save()
@@ -55,6 +55,43 @@ router.route('/update/:id').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/addplant/:id').post((req, res) => {
+  User.findOneAndUpdate({
+    _id: req.params.id,
+  }, {
+    $addToSet: {
+      plants: [{
+        "plantname": req.body.plants[0].plantname,
+        "watersperday": req.body.plants[0].watersperday
+      }]
+    }
+  })
+    .then(user => {
+      user.save()
+        .then(() => res.json("Plant added!"))
+        .catch(err => res.status(400).json("Error :" + err));
+    })
+    .catch(err => res.status(400).json("Error: " + err));
+});
+
+router.route('/removeplant/:id').post((req, res) => {
+  User.findOneAndUpdate({
+    _id: req.params.id,
+  }, {
+    $pull: {
+      plants: {
+        "plantname": req.body.plants[0].plantname
+      }
+    }
+  })
+    .then(user => {
+      user.save()
+        .then(() => res.json("Plant removed!"))
+        .catch(err => res.status(400).json("Error :" + err));
+    })
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
