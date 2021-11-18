@@ -8,6 +8,12 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route("/:id").get((req, res) => {
+  User.findById(req.params.id)
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json("Error " + err));
+});
+
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const email = req.body.email
@@ -49,6 +55,30 @@ router.route('/update/:id').post((req, res) => {
         user.plants = user.plants;
       } else {
         user.plants = req.body.plants
+      }
+
+      if(req.body.notifyTime == null) {
+        user.notifyTime = user.notifyTime;
+      } else {
+        user.notifyTime = req.body.notifyTime;
+      }
+
+      if(req.body.phone == null) {
+        user.phone = user.phone;
+      } else {
+        user.phone = req.body.phone;
+      }
+
+      if(req.body.isEmail == null) {
+        user.isEmail = user.isEmail;
+      } else {
+        user.isEmail = req.body.isEmail;
+      }
+
+      if(req.body.isSMS == null) {
+        user.isSMS = user.isSMS;
+      } else {
+        user.isSMS = req.body.isSMS;
       }
 
       user.save()

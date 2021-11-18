@@ -12,6 +12,11 @@ const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN = "1//04Xfqvkh7JkLMCgYIARAAGAQSNwF-L9IrOZhOSTidFSbLiTFYDnX-61OPfusNWR5MGHlgDs4Vmu9F6QUWYwAtuBagfdh4Wlj-hNo";
 const HYDROCLOCK_EMAIL = "officialhydroclock@gmail.com";
 
+const SID = "ACe1f3a5a7e8f05ce2cdaaadf6c987409d";
+const AUTH_TOKEN = "61e4eb1ed465f106bb144bb1e15e94c4";
+const client = require("twilio")(SID, AUTH_TOKEN)
+const HYDROCLOCK_PHONE = "+18507878234";
+
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
@@ -45,8 +50,28 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
-schedule.scheduleJob("0 9 * * *", () => {
-  notifyAllUsers();
+//testing purposes only
+function testschedule(time) {
+  let now = time
+  console.log(now);
+  axios.get("http://localhost:5000/users/").then(res => {
+    for(let i = 0; i < res.data.length; i++) {
+      if(res.data[i].notifyTime == now && res.data[i].plants.length > 0) {
+        notifyUser(res.data[i]._id);
+      }
+    }
+  })
+}
+
+schedule.scheduleJob("0 * * * *", () => {
+  let now = new Date().getUTCHours()
+  axios.get("http://localhost:5000/users/").then(res => {
+    for(let i = 0; i < res.data.length; i++) {
+      if(res.data[i].notifyTime == now && res.data[i].plants.length > 0 && (res.data[i].isEmail || res.data[i].isSMS)) {
+        notifyUser(res.data[i]._id);
+      }
+    }
+  })
 })
 
 async function sendMail(client, subjectBody, textBody, htmlBody) {
@@ -81,22 +106,33 @@ async function sendMail(client, subjectBody, textBody, htmlBody) {
   }
 }
 
-function notifyAllUsers() {
-  var users = [];
-  axios.get("http://localhost:5000/users").then(res => {
-    if(res.data.length > 0) {
-     for(let i = 0; i < res.data.length; i++) {
+async function sendSMS(userNumber, bodyText) {
+  client.messages
+    .create({
+      to: userNumber,
+      from: HYDROCLOCK_PHONE,
+      body: bodyText
+    })
+  .then(message => console.log(message.sid));
+}
+
+function notifyUser(id) {
+  let url = "http://localhost:5000/users/" + id
+  axios.get(url).then(res => {
       let plantText = "";
       let plantHTML = "";
-      for(let j = 0; j < res.data[i].plants.length; j++) {
-        plantText += res.data[i].plants[j].plantname + " needs be watered " + res.data[i].plants[j].watersperday + " times per day.\n";
-        plantHTML += "<li>" + res.data[i].plants[j].plantname + " needs be watered " + res.data[i].plants[j].watersperday + " times per day.</li>";
+      for(let j = 0; j < res.data.plants.length; j++) {
+        plantText += "\n" + res.data.plants[j].plantname + " needs be watered " + res.data.plants[j].watersperday + " times per day.\n";
+        plantHTML += "<li>" + res.data.plants[j].plantname + " needs be watered " + res.data.plants[j].watersperday + " times per day.</li>";
       }
-      bodyText = "Hello " + res.data[i].username + "!\nThis is your daily reminder water your plants!  Here is your watering details for each plant:\n" + plantText + "\nHave a great day!\nSincerely,\nThe HydroClock Team";
-      bodyHTML = "<h1>Hello " + res.data[i].username + "!</h1><h2>This is your daily reminder water your plants!</h2><h3>Here is your watering details for each plant:<h3><ul>" + plantHTML + "</ul><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>";
-      subject = res.data[i].username + ": plant watering reminder.";
-      sendMail(res.data[i].email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data[i].email + " successfully.")).catch(error => console.log(error.essage));
-     }
-    }
+      bodyText = "Hello " + res.data.username + "!\nThis is your daily reminder water your plants!  Here is your watering details for each plant:\n" + plantText + "\nHave a great day!\nSincerely,\nThe HydroClock Team";
+      bodyHTML = "<h1>Hello " + res.data.username + "!</h1><h2>This is your daily reminder water your plants!</h2><h3>Here is your watering details for each plant:<h3><ul>" + plantHTML + "</ul><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>";
+      subject = res.data.username + ": plant watering reminder.";
+      if(res.data.isEmail) {
+        sendMail(res.data.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data.email + " successfully.")).catch(error => console.log(error.message));
+      }
+      if(res.data.isSMS) {
+        sendSMS(res.data.phone, bodyText).then(result => console.log("Text message sent to " + res.data.phone + " successfully.")).catch(error => console.log(error.message));
+      }
   });
 }

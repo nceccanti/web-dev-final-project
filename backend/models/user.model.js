@@ -23,6 +23,18 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  phone: {
+    type: String
+  },
+  notifyTime : {
+    type: String,
+  },
+  isEmail: {
+    type: Boolean
+  },
+  isSMS: {
+    type: Boolean
+  },
   plants: [plantSchema],
 }, {
   timestamps: true,

@@ -48,7 +48,11 @@ router.route('/login').post((req, res) => {
           const user = new userSchema({
               username: req.body.username,
               email: req.body.email,
-              password: hash
+              password: hash,
+              notifyTime: req.body.notifyTime,
+              phone: req.body.phone,
+              isEmail: true,
+              isSMS: false,
           });
           user.save().then((response) => {
               res.status(201).json({
