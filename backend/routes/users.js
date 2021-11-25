@@ -89,13 +89,15 @@ router.route('/update/:id').post((req, res) => {
 });
 
 router.route('/addplant/:id').post((req, res) => {
+  let now = new Date();
   User.findOneAndUpdate({
     _id: req.params.id,
   }, {
     $addToSet: {
       plants: [{
         "plantname": req.body.plants[0].plantname,
-        "watersperday": req.body.plants[0].watersperday
+        "daystowater": req.body.plants[0].daystowater,
+        "dateCreated": now,
       }]
     }
   })

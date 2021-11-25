@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const plantSchema = new Schema({
   plantname: { type: String },
-  watersperday: { type: Number },
+  daystowater: { type: Number },
+  dateCreated: {type: Date},
 });
 
 const userSchema = new Schema({

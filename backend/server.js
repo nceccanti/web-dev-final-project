@@ -50,17 +50,25 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
+function timeDifference(current, added) {
+  const currentUTC = Date.UTC(current.getFullYear(), current.getMonth(), current.getDate());
+  const addedUTC = Date.UTC(added.getFullYear(), added.getMonth(), added.getDate());
+  let day = 1000*60*60*24;
+  return (addedUTC - currentUTC)/day;
+}
+
 //testing purposes only
-function testschedule(time) {
-  let now = time
-  console.log(now);
-  axios.get("http://localhost:5000/users/").then(res => {
-    for(let i = 0; i < res.data.length; i++) {
-      if(res.data[i].notifyTime == now && res.data[i].plants.length > 0) {
-        notifyUser(res.data[i]._id);
+function isWaterDay(id, name) {
+  let now = new Date();
+  const URL = "http://localhost:5000/users/" + id
+  axios.get(URL).then(res => {
+    for(let i = 0; i < res.data.plants.length; i++) {
+      if(res.data.plants[i].plantname == name) {
+        return timeDifference(now, new Date(res.data.plants[i].dateCreated));
       }
     }
   })
+  return -1;
 }
 
 schedule.scheduleJob("0 * * * *", () => {
@@ -117,19 +125,27 @@ async function sendSMS(userNumber, bodyText) {
 }
 
 function notifyUser(id) {
+  let now = new Date();
   let url = "http://localhost:5000/users/" + id
   axios.get(url).then(res => {
       let plantText = "";
       let plantHTML = "";
       for(let j = 0; j < res.data.plants.length; j++) {
-        plantText += "\n" + res.data.plants[j].plantname + " needs be watered " + res.data.plants[j].watersperday + " times per day.\n";
-        plantHTML += "<li>" + res.data.plants[j].plantname + " needs be watered " + res.data.plants[j].watersperday + " times per day.</li>";
+        let diff = timeDifference(now, new Date(res.data.plants[j].dateCreated));
+        if(diff % res.data.plants[j].daystowater == 0 && diff != -1) {
+          plantText += "\n" + res.data.plants[j].plantname + " needs be watered today.\n";
+          plantHTML += "<li>" + res.data.plants[j].plantname + " needs be watered today.</li>";
+        }
+      }
+      if(plantText.length == 0) {
+        return;
       }
       bodyText = "Hello " + res.data.username + "!\nThis is your daily reminder water your plants!  Here is your watering details for each plant:\n" + plantText + "\nHave a great day!\nSincerely,\nThe HydroClock Team";
       bodyHTML = "<h1>Hello " + res.data.username + "!</h1><h2>This is your daily reminder water your plants!</h2><h3>Here is your watering details for each plant:<h3><ul>" + plantHTML + "</ul><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>";
       subject = res.data.username + ": plant watering reminder.";
       if(res.data.isEmail) {
         sendMail(res.data.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data.email + " successfully.")).catch(error => console.log(error.message));
+        //console.log(bodyText);
       }
       if(res.data.isSMS) {
         sendSMS(res.data.phone, bodyText).then(result => console.log("Text message sent to " + res.data.phone + " successfully.")).catch(error => console.log(error.message));
