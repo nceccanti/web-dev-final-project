@@ -37,9 +37,10 @@ router.route('/login').post((req, res) => {
         })
         })
         .catch(err => {
-            return res.status(401).json({
-              message: "Authorization failed",
-            })
+          console.log("Uncaught error at line 40 in users.auth.js");
+            // return res.status(401).json({
+            //   message: "Authorization failed",
+            // })
       })
   })
 

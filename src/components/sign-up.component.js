@@ -43,7 +43,7 @@ export default class SignUp extends Component {
         e.preventDefault();
         console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5000/api/auth/signup', this.state).then(res=> console.log(res.data));
+        axios.post('http://localhost:5000/api/auth/signup', this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {
@@ -83,7 +83,7 @@ export default class SignUp extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <input type="submit" value="Login" className="btn btn-primary" />
+                    <input type="submit" value="Sign Up" className="btn btn-primary" />
                 </div>
             </form>
         )
