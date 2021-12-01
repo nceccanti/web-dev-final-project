@@ -84,10 +84,10 @@ export default class SignUp extends Component {
                                 value={password}
                             />
                         </div>
+                        <div className="form-group sign-up">
+                            <input type="submit" value="Submit" className="btn btn-block btn-primary" />
+                        </div>
                     </form>
-                </div>
-                <div className="form-group sign-up">
-                        <input type="submit" value="Submit" className="btn btn-block btn-primary" />
                 </div>
             </div>
         )
