@@ -45,12 +45,16 @@ router.route('/login').post((req, res) => {
   })
 
   router.route('/signup').post((req, res) => {
+      let now = new Date();
+      let local = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0, 0)
+      let defaultTime = local.getUTCHours();
+      console.log(defaultTime)
       bcrypt.hash(req.body.password, 10).then((hash) => {
           const user = new userSchema({
               username: req.body.username,
               email: req.body.email,
               password: hash,
-              notifyTime: req.body.notifyTime,
+              notifyTime: defaultTime,
               phone: req.body.phone,
               isEmail: true,
               isSMS: false,

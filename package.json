@@ -10,6 +10,7 @@
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.1.3",
+    "dotenv": "^10.0.0",
     "googleapis": "^89.0.0",
     "jsonwebtoken": "^8.5.1",
     "node-cron": "^3.0.0",

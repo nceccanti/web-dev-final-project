@@ -5,15 +5,16 @@ const nodemailer = require("nodemailer");
 const { google  } = require("googleapis");
 const schedule = require("node-schedule");
 const axios = require("axios");
+require("dotenv").config();
 
-const CLIENT_ID = "125774351731-ol5bf0rutel127u6vva0p4mum1fi6r8i.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
+const CLIENT_ID = process.env.CLIENT_ID_KEY;
+const CLIENT_SECRET = process.env.CLIENT_SECRET_KEY;
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//040dgRSFfHb6LCgYIARAAGAQSNwF-L9IrSGZ_vLOTqGLwnVJSaiiQu3sZJ71wcfmfdmDOsIIXJvL4d9_1u79x3RgZWxmko9ZNu_c";
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN_KEY;
 const HYDROCLOCK_EMAIL = "officialhydroclock@gmail.com";
 
-const SID = "ACe1f3a5a7e8f05ce2cdaaadf6c987409d";
-const AUTH_TOKEN = "61e4eb1ed465f106bb144bb1e15e94c4";
+const SID = process.env.SID_KEY;
+const AUTH_TOKEN = process.env.AUTH_TOKEN_KEY;
 const client = require("twilio")(SID, AUTH_TOKEN)
 const HYDROCLOCK_PHONE = "+18507878234";
 
@@ -124,6 +125,8 @@ async function sendSMS(userNumber, bodyText) {
   .then(message => console.log(message.sid));
 }
 
+console.log(new Date().getUTCHours())
+
 function notifyUser(id) {
   let now = new Date();
   let url = "http://localhost:5005/users/" + id
@@ -132,7 +135,7 @@ function notifyUser(id) {
       let plantHTML = "";
       for(let j = 0; j < res.data.plants.length; j++) {
         let diff = timeDifference(now, new Date(res.data.plants[j].dateCreated));
-        if(diff % res.data.plants[j].daystowater == 0 && diff != -1) {
+        if(diff % res.data.plants[j].daystowater == 0) {
           plantText += "\n" + res.data.plants[j].plantname + " needs be watered today.\n";
           plantHTML += "<li>" + res.data.plants[j].plantname + " needs be watered today.</li>";
         }
