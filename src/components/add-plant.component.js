@@ -27,7 +27,8 @@ export default class AddPlant extends Component {
         //     this.onMessageChange("Could not create account");
         // }
         let now = new Date();
-        this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:now});
+        let nowString = now.toString();
+        this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString});
         this.props.history.push(`/dashboard`);
     }
 
