@@ -38,7 +38,7 @@ export default class AddPlant extends Component {
         console.log(this.state);
         let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater}]};
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5000/users/addplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {

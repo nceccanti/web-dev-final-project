@@ -43,7 +43,7 @@ export default class SignUp extends Component {
         e.preventDefault();
         console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5000/api/auth/signup', this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/api/auth/signup', this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {

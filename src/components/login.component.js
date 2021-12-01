@@ -39,7 +39,7 @@ export default class Login extends Component {
         e.preventDefault();
         
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5000/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => this.onAuthenticationFailed(res));
+        axios.post('http://localhost:5005/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => this.onAuthenticationFailed(res));
     }
   
     render() {

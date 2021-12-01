@@ -48,7 +48,7 @@ export default class EditPlant extends Component {
         // console.log(this.state);
         let rqst ={plants:[{plantname: this.state.plantname}]};
         // Waiting for backend implementation
-        // axios.post('http://localhost:5000/users/removeplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        // axios.post('http://localhost:5005/users/removeplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {

@@ -38,7 +38,7 @@ export default class DeletePlant extends Component {
         // console.log(this.state);
         let rqst ={plants:[{plantname: this.state.plantname}]};
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5000/users/removeplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/users/removeplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {

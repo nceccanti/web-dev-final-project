@@ -50,7 +50,7 @@ class ContactUs extends Component {
         e.preventDefault();
         console.log(this.state);
 
-        axios.post('http://localhost:5000/contact', this.state).then(res => console.log(res.data));
+        axios.post('http://localhost:5005/contact', this.state).then(res => console.log(res.data));
         // sendMail('therambory@gmail.com', subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data[i].email + " successfully.")).catch(error => console.log(error.essage));
       }
     }
