@@ -128,33 +128,46 @@ router.route('/removeplant/:id').post((req, res) => {
 });
 
 router.route('/updateplant/:id').post((req, res) => {
-  //TODO implent
+  User.findOneAndUpdate({
+    _id: req.params.id,
+  }, {
+    $pull: {
+      plants: {
+        "plantname": req.body.plants[0].oldplantname
+      }
+    }
+  })
+    .then(user => {
+      user.save()
+        .then(() => res.json("Plant edited!"))
+        .catch(err => res.status(400).json("Error :" + err));
+    })
+    .catch(err => res.status(400).json("Error: " + err));
 
-  res.json("Implement me!");
+    let now;
+    if(req.body.plants[0].daystowater == req.body.olddaystowater) {
+      now = req.body.plants[0].dateCreated;
+    } else {
+      now = new Date();
+    }
 
-  // let now = new Date();
-  // User.findOneAndUpdate({
-  //   _id: req.params.id,
-  // }, {
-  //   $pull: {
-  //     plants: {
-  //       "plantname": req.body.plants[0].oldplantname
-  //     },
-  //   $addToSet: {
-  //       plants: [{
-  //         "plantname": req.body.plants[0].plantname,
-  //         "daystowater": req.body.plants[0].daystowater,
-  //         "dateCreated": now,
-  //       }]
-  //     }
-  //   }
-  // })
-  //   .then(user => {
-  //     user.save()
-  //       .then(() => res.json("Plant updated!"))
-  //       .catch(err => res.status(400).json("Error :" + err));
-  //   })
-  //   .catch(err => res.status(400).json("Error: " + err));
+    User.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $addToSet: {
+        plants: [{
+          "plantname": req.body.plants[0].plantname,
+          "daystowater": req.body.plants[0].daystowater,
+          "dateCreated": now,
+        }]
+      }
+    })
+      .then(user => {
+        user.save()
+          .then(() => res.json("Plant edited!"))
+          .catch(err => res.status(400).json("Error :" + err));
+      })
+      .catch(err => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
