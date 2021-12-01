@@ -11,6 +11,20 @@ import DeletePlant from "./components/delete-plant.component";
 import Login from "./components/login.component";
 import SignUp from "./components/sign-up.component";
 
+const plantTypes = [
+  { value: 6, label: 'African Violet' },
+  { value: 16, label: 'Aloe Vera' },
+  { value: 6, label: 'Bamboo' },
+  { value: 9, label: 'Cactus' },
+  { value: 7, label: 'Croton' },
+  { value: 10, label: 'Fiddle Leaf Fig' },
+  { value: 7, label: 'Orchid' },
+  { value: 2, label: 'Peace Lily' },
+  { value: 7, label: 'Philodendron' },
+  { value: 12, label: 'Sago Palm' },
+  { value: 8, label: 'Thanksgiving Cactus' },
+]
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -89,16 +103,17 @@ export default class App extends Component {
 
           <div className="container">
 
-            <span className="authentication-check">{p}</span>
+            {/* <span className="authentication-check">{p}</span> */}
 
 
             <Route path="/home" component={Home} />
             <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants}/>)} />
-            <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}/>)} />
+            <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}
+            plantTypes={plantTypes}/>)} />
             <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
             deletePlantFromList={this.deletePlantFromList}/>)} />
             <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-            updatePlantInList={this.updatePlantInList}/>)} />
+            updatePlantInList={this.updatePlantInList} plantTypes={this.plantTypes}/>)} />
             <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
             <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
           </div>

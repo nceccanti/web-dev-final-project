@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
+import Select from 'react-select';
 import axios from 'axios';
 import '../index.css';
 
 export default class AddPlant extends Component {
     constructor(props) {
         super(props)
-        this.state = {currentUser:this.props.currentUser, plantname:"", daystowater:""};
+        this.state = {currentUser:this.props.currentUser,
+            plantname:"",
+            daystowater:"",
+            plantType:7
+        };
 
         this.onPlantNameChange = this.onPlantNameChange.bind(this);
         this.onDaysToWaterChange = this.onDaysToWaterChange.bind(this);
+        this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
     }
     
     onPlantNameChange(event) {
@@ -17,6 +23,15 @@ export default class AddPlant extends Component {
     
     onDaysToWaterChange(event) {
         this.setState({daystowater: event.target.value});
+    }
+
+    onPlantTypeChange(event) {
+        if (event){
+            this.setState({daystowater: event.value});
+        }
+        else {
+            this.setState({daystowater: ""});
+        }
     }
     
     processResponse(res) {
@@ -56,8 +71,12 @@ export default class AddPlant extends Component {
                         value={plantname}
                     />
                 </div>
+                <div>
+                    <label>Plant Types: (Selection will autofill watering schedule field)</label>
+                    <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange}/>
+                </div>
                 <div className="form-group"> 
-                    <label>Days to water: </label>
+                    <label>Days between waterings: </label>
                     <input type="number"
                         required
                         className="form-control"    
