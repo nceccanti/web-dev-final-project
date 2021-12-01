@@ -41,6 +41,16 @@ code {
   background-color: #05386B;
 }
 
+.dashboard-container {
+    padding: 50px;
+    text-align: center;
+}
+
+.dashboard-container .row {
+    size: 99%;
+    margin: auto;
+}
+
 .entered-info {
   padding-bottom: 55px;
 }
@@ -70,9 +80,9 @@ code {
   /* background-color: #379683; */
   background-color: #8EE4AF;
   border-radius: 25px;
-  padding-left: 100px;
-  padding-right: 100px;
+  padding: 75px;
   color: #05386B;
+  font-size: large;
 }
 
 .navbar {
@@ -89,6 +99,11 @@ code {
     background-color: #05386B;
     color: #EDF5E1;
     text-align: center;
+}
+
+.padded-div-top-btm {
+    padding-top: 25px;
+    padding-bottom: 25px;
 }
 
 .sign-up {

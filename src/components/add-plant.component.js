@@ -61,33 +61,37 @@ export default class AddPlant extends Component {
         const daystowater = this.state.daystowater;
 
         return (
-            <form onSubmit={this.handleSubmit.bind(this)} method="POST">
-                <div className="form-group"> 
-                    <label>Plant Name: </label>
-                    <input type="text"
-                        required
-                        className="form-control"
-                        onChange={this.onPlantNameChange}
-                        value={plantname}
-                    />
-                </div>
-                <div>
-                    <label>Plant Types: (Selection will autofill watering schedule field)</label>
-                    <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange}/>
-                </div>
-                <div className="form-group"> 
-                    <label>Days between waterings: </label>
-                    <input type="number"
-                        required
-                        className="form-control"    
-                        onChange={this.onDaysToWaterChange}
-                        value={daystowater}
-                    />
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Add Plant" className="btn btn-primary" />
-                </div>
-            </form>
+            <div className="login-container">
+                <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+                    <div className="form-group"> 
+                        <label><h2>Plant Name: </h2></label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            onChange={this.onPlantNameChange}
+                            value={plantname}
+                        />
+                    </div>
+                    <div className="padded-div-top-btm">
+                        <label><h2>Plant Types: </h2>(Selection will autofill watering schedule field)</label>
+                        <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange}/>
+                    </div>
+                    <div className="padded-div-top-btm">
+                        <div className="form-group"> 
+                            <label><h2>Days Between Waterings: </h2></label>
+                            <input type="number"
+                                required
+                                className="form-control"    
+                                onChange={this.onDaysToWaterChange}
+                                value={daystowater}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <input type="submit" value="Add Plant" className="btn btn-primary btn-block" />
+                    </div>
+                </form>
+            </div>
         )
     }
 }

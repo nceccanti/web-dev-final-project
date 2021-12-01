@@ -17,7 +17,7 @@ export default class PlantList extends Component {
             cards.push(<div className="card m-3" style={{width:"20rem"}}><Plant plantname={plants[i].plantname} daystowater={plants[i].daystowater} dateCreated={plants[i].dateCreated}/></div>);
         }
         return (
-        <div>
+        <div className="dashboard-container">
             <h1>Your Plants</h1>
             <div className="container">
                 <div className="row">

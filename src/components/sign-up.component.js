@@ -66,24 +66,31 @@ export default class SignUp extends Component {
                                 value={username}
                             />
                         </div>
-                        <div className="form-group"> 
-                            <label><h2>Email: </h2></label>
-                            <input  type="email"
-                                required
-                                className="form-control"    
-                                onChange={this.onEmailChange}
-                                value={email}
-                            />
+
+                        <div className="padded-div-top-btm">
+                            <div className="form-group"> 
+                                <label><h2>Email: </h2></label>
+                                <input  type="email"
+                                    required
+                                    className="form-control"    
+                                    onChange={this.onEmailChange}
+                                    value={email}
+                                />
+                            </div>
                         </div>
-                        <div className="form-group"> 
-                            <label><h2>Password: </h2></label>
-                            <input type="password"
-                                required
-                                className="form-control"
-                                onChange={this.onPasswordChange}
-                                value={password}
-                            />
+
+                        <div className="padded-div-top-btm">
+                            <div className="form-group"> 
+                                <label><h2>Password: </h2></label>
+                                <input type="password"
+                                    required
+                                    className="form-control"
+                                    onChange={this.onPasswordChange}
+                                    value={password}
+                                />
+                            </div>
                         </div>
+
                         <div className="form-group sign-up">
                             <input type="submit" value="Submit" className="btn btn-block btn-primary" />
                         </div>
