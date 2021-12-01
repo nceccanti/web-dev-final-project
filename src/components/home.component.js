@@ -11,6 +11,9 @@ export default class Home extends Component {
                     <h2>Plants are great! But taking care of them can be hard.</h2><br/>
                     <h2>That's why we made HydroClock!</h2>
                     <br/><br/>
+                    <div className="home-img">
+                        <img src={backgroundImg} id="bg" alt=""></img> 
+                    </div>
                     <ul>
                         <div className="list-item-one">
                             <li>Get watering reminders</li>
@@ -19,13 +22,7 @@ export default class Home extends Component {
                         <li>Find plant care tips based on plant type</li>
                         </div>
                     </ul>
-                </div> 
-                <div>
-                    {/* 
-                      * TODO: fix formatting on this image
-                      *<img src={backgroundImg} id="bg" alt=""></img> 
-                      */}
-                </div> 
+                </div>  
             </div>      
         )
     }

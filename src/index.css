@@ -62,6 +62,10 @@ code {
     font-size: x-large;
 }
 
+.home-img {
+    padding: 50px;
+}
+
 .login-container {
   /* background-color: #379683; */
   background-color: #8EE4AF;
