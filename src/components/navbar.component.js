@@ -7,7 +7,7 @@ export default class Navbar extends Component {
 
 render() {
   return (
-    <nav className="navbar navbar-expand-sm bg-light">
+    <nav className="navbar  navbar-expand-lg">
       <div className="container-fluid">
       <Link to="/home" className="logo navbar-header"><LogoSvg /></Link>
       {this.props.currentUser 
@@ -19,8 +19,8 @@ render() {
         </div>
       : <div className="navbar-nav">
           <ul className="nav navbar-nav navbar-right">
-            <li className="nav-item">
-              <Link to="/login" className="nav-link">Login</Link>
+            <li className="nav-item" id="loginButton">
+              <Link to="/login" className="nav-link"><h2>Login</h2></Link>
             </li>
           </ul>
         </div>

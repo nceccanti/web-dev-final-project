@@ -48,32 +48,41 @@ export default class Login extends Component {
         const msg = this.state.msg;
 
         return (
-            <div>
-            <form onSubmit={this.handleSubmit.bind(this)} method="POST">
-                <p style={{color:"red"}}>{msg}</p>
-                <div className="form-group"> 
-                    <label>Email: </label>
-                    <input  type="email"
-                        required
-                        className="form-control"    
-                        onChange={this.onEmailChange}
-                        value={email}
-                    />
+            <div className="login-container">
+                <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+                    <p style={{color:"red"}}>{msg}</p>
+
+
+                    <div className="entered-info">
+                        <div className="form-group"> 
+                            <label><h2>Email: </h2></label>
+                            <input  type="email"
+                                required
+                                className="form-control"    
+                                onChange={this.onEmailChange}
+                                value={email}
+                            />
+                        </div>
+                        <div className="form-group"> 
+                            <label><h2>Password: </h2></label>
+                            <input type="password"
+                                required
+                                className="form-control"
+                                onChange={this.onPasswordChange}
+                                value={password}
+                            />
+                        </div>
+                    </div>
+
+
+
+                    <div className="form-group">
+                        <input type="submit" value="Login" className="btn btn-lg btn-block btn-primary mx-auto d-block" />
+                    </div>
+                </form>
+                <div className="sign-up">
+                    Don't have an account? <Link to="/signup">Sign Up</Link>
                 </div>
-                <div className="form-group"> 
-                    <label>Password: </label>
-                    <input type="password"
-                        required
-                        className="form-control"
-                        onChange={this.onPasswordChange}
-                        value={password}
-                    />
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Login" className="btn btn-primary" />
-                </div>
-            </form>
-            <Link to="/signup">Sign Up</Link>
             </div>
         )
     }

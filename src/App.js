@@ -77,25 +77,33 @@ export default class App extends Component {
     const currentUser = this.state.currentUser;
     let p
     if (currentUser) {
-      p = <p>Authenticated</p>;
+      p = <p><h3>Authenticated!</h3></p>;
     }
     else {
-      p = <p>Not Authenticated</p>;
+      p = <p><h3>Not Authenticated!</h3></p>;
     }
     return (
       <Router>
         <div className="App">
           <Navbar logout={this.logout} currentUser={this.state.currentUser}/>
-          {p}
-          <Route path="/home" component={Home} />
-          <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants}/>)} />
-          <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}/>)} />
-          <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-          deletePlantFromList={this.deletePlantFromList}/>)} />
-          <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-          updatePlantInList={this.updatePlantInList}/>)} />
-          <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
-          <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
+
+          <div className="container">
+
+            <span className="authentication-check">{p}</span>
+
+
+            <Route path="/home" component={Home} />
+            <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants}/>)} />
+            <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}/>)} />
+            <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
+            deletePlantFromList={this.deletePlantFromList}/>)} />
+            <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
+            updatePlantInList={this.updatePlantInList}/>)} />
+            <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
+            <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
+          </div>
+
+
         </div>
       </Router>
     )

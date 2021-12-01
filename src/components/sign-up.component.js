@@ -53,39 +53,43 @@ export default class SignUp extends Component {
         const msg = this.state.msg;
 
         return (
-            <form onSubmit={this.handleSubmit.bind(this)} method="POST">
-                <p style={{color:"red"}}>{msg}</p>
-                <div className="form-group"> 
-                    <label>Username: </label>
-                    <input type="text"
-                        required
-                        className="form-control"
-                        onChange={this.onUsernameChange}
-                        value={username}
-                    />
+            <div className="login-container">
+                <div className="entered-info">
+                    <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+                        <p style={{color:"red"}}>{msg}</p>
+                        <div className="form-group"> 
+                            <label><h2>Username: </h2></label>
+                            <input type="text"
+                                required
+                                className="form-control"
+                                onChange={this.onUsernameChange}
+                                value={username}
+                            />
+                        </div>
+                        <div className="form-group"> 
+                            <label><h2>Email: </h2></label>
+                            <input  type="email"
+                                required
+                                className="form-control"    
+                                onChange={this.onEmailChange}
+                                value={email}
+                            />
+                        </div>
+                        <div className="form-group"> 
+                            <label><h2>Password: </h2></label>
+                            <input type="password"
+                                required
+                                className="form-control"
+                                onChange={this.onPasswordChange}
+                                value={password}
+                            />
+                        </div>
+                    </form>
                 </div>
-                <div className="form-group"> 
-                    <label>Email: </label>
-                    <input  type="email"
-                        required
-                        className="form-control"    
-                        onChange={this.onEmailChange}
-                        value={email}
-                    />
+                <div className="form-group sign-up">
+                        <input type="submit" value="Submit" className="btn btn-block btn-primary" />
                 </div>
-                <div className="form-group"> 
-                    <label>Password: </label>
-                    <input type="password"
-                        required
-                        className="form-control"
-                        onChange={this.onPasswordChange}
-                        value={password}
-                    />
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Sign Up" className="btn btn-primary" />
-                </div>
-            </form>
+            </div>
         )
     }
 }
