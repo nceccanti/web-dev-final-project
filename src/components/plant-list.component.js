@@ -7,6 +7,7 @@ export default class PlantList extends Component {
     constructor(props) {
         super(props);
 
+        console.log(this.props);
         this.state = {plants:this.props.plants};
     }
 

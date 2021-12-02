@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Select from 'react-select';
 import axios from 'axios';
 import '../index.css';
 
@@ -21,12 +22,15 @@ export default class EditPlant extends Component {
             plantname:plant.plantname, 
             oldplantname:plant.plantname,
             daystowater:plant.daystowater, 
-            dateCreated:plant.dateCreated};
+            dateCreated:plant.dateCreated,
+            planttype:plant.planttype
+        };
         
         this.processResponse = this.processResponse.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.onPlantNameChange = this.onPlantNameChange.bind(this);
         this.onDaysToWaterChange = this.onDaysToWaterChange.bind(this);
+        this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
     }
     
     onPlantNameChange(event) {
@@ -37,8 +41,19 @@ export default class EditPlant extends Component {
         this.setState({daystowater: event.target.value});
     }
 
+    onPlantTypeChange(event) {
+        if (event){
+            this.setState({planttype: event.value});
+            this.setState({daystowater: event.days});
+        }
+        else {
+            this.setState({planttype:""});
+            this.setState({daystowater: ""});
+        }
+    }
+
     processResponse(res) {
-        this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname})
+        this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname,planttype:this.state.planttype})
         this.props.history.push(`/dashboard`);
     }
 
@@ -46,9 +61,9 @@ export default class EditPlant extends Component {
     handleSubmit(e) {
         e.preventDefault();
         // console.log(this.state);
-        let rqst ={plants:[{plantname: this.state.plantname}]};
+        let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater,oldplantname:this.state.oldplantname,planttype:this.state.planttype}]};
         // Waiting for backend implementation
-        // axios.post('http://localhost:5005/users/removeplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/users/updateplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {
@@ -71,6 +86,10 @@ export default class EditPlant extends Component {
                         onChange={this.onPlantNameChange}
                         value={plantname}
                     />
+                </div>
+                <div className="padded-div-top-btm">
+                    <label><h2>Plant Types: </h2>(Selection will autofill watering schedule field)</label>
+                    <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange} value={this.props.plantTypes[this.state.planttype]}/>
                 </div>
                 <div className="form-group"> 
                     <label>Days to water: </label>
