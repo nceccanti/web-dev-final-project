@@ -14,7 +14,9 @@ export default class PlantList extends Component {
         let cards = [];
         const plants = this.state.plants;
         for (var i=0; i < plants.length; i++) {
-            cards.push(<div className="card m-3" style={{width:"20rem"}}><Plant plantname={plants[i].plantname} daystowater={plants[i].daystowater} dateCreated={plants[i].dateCreated}/></div>);
+            let temp = plants[i].dateCreated;
+            let local = new Date(temp).toLocaleDateString();
+            cards.push(<div className="card m-3" style={{width:"20rem"}}><Plant plantname={plants[i].plantname} daystowater={plants[i].daystowater} dateCreated={local}/></div>);
         }
         return (
         <div>

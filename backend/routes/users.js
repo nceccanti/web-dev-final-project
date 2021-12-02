@@ -98,6 +98,7 @@ router.route('/addplant/:id').post((req, res) => {
         "plantname": req.body.plants[0].plantname,
         "daystowater": req.body.plants[0].daystowater,
         "dateCreated": now,
+        "planttype": req.body.plants[0].planttype,
       }]
     }
   })
@@ -139,7 +140,6 @@ router.route('/updateplant/:id').post((req, res) => {
   })
     .then(user => {
       user.save()
-        .then(() => res.json("Plant edited!"))
         .catch(err => res.status(400).json("Error :" + err));
     })
     .catch(err => res.status(400).json("Error: " + err));
@@ -159,6 +159,7 @@ router.route('/updateplant/:id').post((req, res) => {
           "plantname": req.body.plants[0].plantname,
           "daystowater": req.body.plants[0].daystowater,
           "dateCreated": now,
+          "planttype": req.body.plants[0].planttype,
         }]
       }
     })

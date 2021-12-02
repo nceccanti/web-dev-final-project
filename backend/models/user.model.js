@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const plantSchema = new Schema({
-  plantname: { type: String },
-  daystowater: { type: Number },
-  dateCreated: {type: Date},
+  plantname: { type: String, required: true },
+  daystowater: { type: Number, required: true },
+  dateCreated: { type: Date, required: true },
+  planttype: { type: String }
 });
 
 const userSchema = new Schema({
