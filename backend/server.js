@@ -7,8 +7,6 @@ const schedule = require("node-schedule");
 const axios = require("axios");
 require("dotenv").config();
 
-console.log(new Date().toLocaleDateString())
-
 const CLIENT_ID = process.env.CLIENT_ID_KEY;
 const CLIENT_SECRET = process.env.CLIENT_SECRET_KEY;
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
@@ -126,8 +124,6 @@ async function sendSMS(userNumber, bodyText) {
     })
   .then(message => console.log(message.sid));
 }
-
-console.log(new Date().getUTCHours())
 
 function notifyUser(id) {
   let now = new Date();

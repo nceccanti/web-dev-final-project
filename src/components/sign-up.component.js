@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../index.css';
 
 export default class SignUp extends Component {
+
     constructor(props) {
         super(props)
         this.state = {email:"", password:"", username:"", msg:""}
@@ -11,6 +12,8 @@ export default class SignUp extends Component {
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onMessageChange = this.onMessageChange.bind(this);
+
+
     }
     
     onEmailChange(event) {
@@ -30,11 +33,31 @@ export default class SignUp extends Component {
     }
     
     processResponse(res) {
-        if (res.status === 201) {
+        let userValid = false;
+        const user = /^[a-z0-9_\.]+$/;
+        if(!user.test(this.state.username)) {
+            userValid = false
+        } else {
+            userValid = true
+        }
+
+        let passValid = false;
+        const pass = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/
+        if(!pass.test(this.state.password)) {
+            passValid = false
+        } else {
+            passValid = true;
+        }
+
+        if (res.status === 201 && userValid && passValid) {
             this.onMessageChange("Account created");
         }
         else if (res.status === 500) {
             this.onMessageChange("Could not create account");
+        } else if(!userValid) {
+            this.onMessageChange("Invalid username. Try removing special characters.")
+        } else if(!passValid) {
+            this.onMessageChange("Password must contain 8 characters, at least one number, and one special character.")
         }
     }
 
