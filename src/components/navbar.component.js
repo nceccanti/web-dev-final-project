@@ -14,6 +14,7 @@ render() {
       ? <div className="navbar-nav">
         <ul className="nav navbar-nav">
           <li><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
+          <li><Link to="/profile" className="nav-link">Edit Profile</Link></li>
           <li><Link to="/home" onClick={this.props.logout} className="nav-link">Logout</Link></li>
         </ul>
         </div>

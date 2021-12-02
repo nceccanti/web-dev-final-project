@@ -9,7 +9,7 @@ export default class AddPlant extends Component {
         this.state = {currentUser:this.props.currentUser,
             plantname:"",
             daystowater:"",
-            plantType:7
+            planttype:null
         };
 
         this.onPlantNameChange = this.onPlantNameChange.bind(this);
@@ -27,9 +27,11 @@ export default class AddPlant extends Component {
 
     onPlantTypeChange(event) {
         if (event){
-            this.setState({daystowater: event.value});
+            this.setState({planttype: event.value});
+            this.setState({daystowater: event.days});
         }
         else {
+            this.setState({planttype:""});
             this.setState({daystowater: ""});
         }
     }
@@ -43,7 +45,7 @@ export default class AddPlant extends Component {
         // }
         let now = new Date();
         let nowString = now.toString();
-        this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString});
+        this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString,planttype:this.state.planttype});
         this.props.history.push(`/dashboard`);
     }
 
@@ -51,9 +53,9 @@ export default class AddPlant extends Component {
     handleSubmit(e) {
         e.preventDefault();
         console.log(this.state);
-        let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater}]};
+        let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype}]};
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {
@@ -74,7 +76,7 @@ export default class AddPlant extends Component {
                     </div>
                     <div className="padded-div-top-btm">
                         <label><h2>Plant Types: </h2>(Selection will autofill watering schedule field)</label>
-                        <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange}/>
+                        <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange} value={this.props.plantTypes[this.state.planttype]}/>
                     </div>
                     <div className="padded-div-top-btm">
                         <div className="form-group"> 

@@ -31,6 +31,7 @@ export default class Login extends Component {
     processResponse(res) {
         if (res.status === 200) {
             this.props.onUserAuthenticated(res.data.msg);
+            localStorage.setItem("currentUser", res.data.msg.username);
             this.props.history.push(`/dashboard`);
         }
     }

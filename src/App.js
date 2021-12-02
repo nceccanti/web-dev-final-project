@@ -10,19 +10,20 @@ import EditPlant from "./components/edit-plant.componet";
 import DeletePlant from "./components/delete-plant.component";
 import Login from "./components/login.component";
 import SignUp from "./components/sign-up.component";
+import Profile from "./components/update-profile.component";
 
 const plantTypes = [
-  { value: 6, label: 'African Violet' },
-  { value: 16, label: 'Aloe Vera' },
-  { value: 6, label: 'Bamboo' },
-  { value: 9, label: 'Cactus' },
-  { value: 7, label: 'Croton' },
-  { value: 10, label: 'Fiddle Leaf Fig' },
-  { value: 7, label: 'Orchid' },
-  { value: 2, label: 'Peace Lily' },
-  { value: 7, label: 'Philodendron' },
-  { value: 12, label: 'Sago Palm' },
-  { value: 8, label: 'Thanksgiving Cactus' },
+  { value: 0, label: 'African Violet', days: 6 },
+  { value: 1, label: 'Aloe Vera', days: 16},
+  { value: 2, label: 'Bamboo', days: 6},
+  { value: 3, label: 'Cactus', days: 9},
+  { value: 4, label: 'Croton', days: 7},
+  { value: 5, label: 'Fiddle Leaf Fig', days: 10},
+  { value: 6, label: 'Orchid', days: 7},
+  { value: 7, label: 'Peace Lily', days: 2},
+  { value: 8, label: 'Philodendron', days: 7},
+  { value: 9, label: 'Sago Palm', days: 12},
+  { value: 10, label: 'Thanksgiving Cactus', days: 8},
 ]
 
 export default class App extends Component {
@@ -32,6 +33,7 @@ export default class App extends Component {
 
     this.onUserAuthenticated = this.onUserAuthenticated.bind(this);
     this.logout = this.logout.bind(this);
+    this.updateUser = this.updateUser.bind(this);
     this.addPlantToPlantList = this.addPlantToPlantList.bind(this);
     this.deletePlantFromList = this.deletePlantFromList.bind(this);
     this.updatePlantInList = this.updatePlantInList.bind(this);
@@ -39,16 +41,17 @@ export default class App extends Component {
 
   logout() {
     if (this.state.currentUser != null) {
-      sessionStorage.removeItem('currentUser');
+      localStorage.removeItem('currentUser');
       this.setState({currentUser:null});
       this.setState({plants:null});
     }
   }
 
   onUserAuthenticated(user) {
-    console.log("User authenticated");
-    sessionStorage.setItem("currentUser", user.token);
-    this.setState({currentUser:user._id});
+    // console.log("User authenticated");
+    delete user.password;
+    localStorage.setItem("currentUser", user.token);
+    this.setState({currentUser:user});
     this.setState({plants:user.plants});
   }
 
@@ -87,6 +90,14 @@ export default class App extends Component {
     }
   }
 
+  updateUser(user) {
+    this.setState({username: user.username});
+    this.setState({email:user.email});
+    this.setState({phone:user.phone});
+    this.setState({isEmail:user.isEmail});
+    this.setState({isSMS:user.isSMS});
+  }
+
   render () {
     const currentUser = this.state.currentUser;
     let p
@@ -113,9 +124,10 @@ export default class App extends Component {
             <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
             deletePlantFromList={this.deletePlantFromList}/>)} />
             <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-            updatePlantInList={this.updatePlantInList} plantTypes={this.plantTypes}/>)} />
+            updatePlantInList={this.updatePlantInList} plantTypes={plantTypes}/>)} />
             <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
             <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
+            <Route path="/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser}/>)} />
           </div>
 
 
