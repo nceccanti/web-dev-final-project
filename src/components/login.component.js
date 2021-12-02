@@ -19,6 +19,15 @@ export default class Login extends Component {
     }
     
     onPasswordChange(event) {
+
+        // let passValid = false;
+        // const pass = /[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/
+        // if(!pass.test(this.state.password)) {
+        //     passValid = false
+        // } else {
+        //     passValid = true;
+        // }
+        // console.log(passValid)
         this.setState({password: event.target.value});
     }
 

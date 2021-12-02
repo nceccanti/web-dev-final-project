@@ -15,6 +15,9 @@ export default class Plant extends Component {
     //     return to;
     // }
     // daystowater: timeDifference(new Date.toString, this.props.dateCreated, this.props.daystowater),
+    // if(timeDifference(new Date.toString, this.props.dateCreated, this.props.daystowater == 0)) {
+    //     daystowater = "today!"
+    // }
 
     constructor(props) {
         super(props);
