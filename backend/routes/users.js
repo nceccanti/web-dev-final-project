@@ -43,12 +43,11 @@ router.route('/update/:id').post([
   body('username').trim().escape().isLength(3).withMessage("Username must have a minimum of 3 characters."),
   body('phone').trim().escape().custom((value, {req}) => {
     let val = /^[\+]?[0-9]{11,13}$/;
-    console.log(value.length)
     if(value.length == 0) {
       return true;
     }
     if(!val.test(value)) {
-      throw new Error("Invalid phone number")
+      throw new Error("Phone number must include country code with +, no parentheses, no hypthens Ex: +11234567890")
     }
     return true;
   }),
@@ -116,7 +115,7 @@ router.route('/update/:id').post([
 
 router.route('/addplant/:id').post([
   body('plantname').trim().escape().isLength(2).withMessage("Plantname must have a minimum of 1 character."),
-  body('daystowater').custom((value, {req}) => {
+  body('daystowater').trim().escape().custom((value, {req}) => {
     let num = parseInt(value);
     if(Number.isNaN(num) || num < 1) {
       throw new Error("Invalid watering days")
@@ -175,7 +174,7 @@ router.route('/removeplant/:id').post((req, res) => {
 
 router.route('/updateplant/:id').post([
   body('plantname').trim().escape().isLength(2).withMessage("Plantname must have a minimum of 1 character."),
-  body('daystowater').custom((value, {req}) => {
+  body('daystowater').trim().escape().custom((value, {req}) => {
     let num = parseInt(value);
     if(Number.isNaN(num) || num < 1) {
       throw new Error("Invalid watering days")

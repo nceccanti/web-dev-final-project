@@ -28,8 +28,7 @@ export default class Plant extends Component {
 
         let added = new Date(this.props.dateCreated);
 
-        let daysto = new Date(this.props.daystowater);
-
+        let daysto = this.props.daystowater;
         let daystowater = this.timeDifference(now, added, daysto);
 
         this.state = {
@@ -45,16 +44,28 @@ export default class Plant extends Component {
         const currentUTC = Date.UTC(current.getFullYear(), current.getMonth(), current.getDate());
         const addedUTC = Date.UTC(added.getFullYear(), added.getMonth(), added.getDate());
         let day = 1000*60*60*24;
-        let to = Math.abs((addedUTC - currentUTC)/day) % daysto;
+        let diff = Math.abs((addedUTC - currentUTC)/day);
+        console.log(diff)
+        let to = diff % daysto
+        if(diff == 0) {
+            to = -1;
+        }
         return to;
     }
 
     render() {
         const plantname = this.state.plantname;
         const wateringInterval = this.state.wateringInterval;
-        const daystowater = this.state.daystowater;
+        let daystowater = this.state.daystowater;
         const dateCreated = this.state.dateCreated;
         const qString = "?plant=" + plantname;
+        if(daystowater == 0) {
+            daystowater = "today!"
+        }
+        if(daystowater == -1) {
+            daystowater = wateringInterval
+        }
+
         return (
         <div className="card-body">
             <h4 className="card-title">{plantname}</h4>

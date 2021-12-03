@@ -17,7 +17,8 @@ export default class EditUser extends Component {
             notifyTime:user.notifyTime,
             isEmail:user.isEmail,
             isSMS:user.isSMS,
-            msg: ""
+            msg: "",
+            displayTime: "",
         }
 
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -27,6 +28,7 @@ export default class EditUser extends Component {
         this.onNotifyTimeChange = this.onNotifyTimeChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsSMSChange = this.onIsSMSChange.bind(this);
+        this.setState({displayTime: this.convertDisplay(this.state.notifyTime)})
     }
 
     onUsernameChange(event) {
@@ -46,7 +48,29 @@ export default class EditUser extends Component {
     }
 
     onNotifyTimeChange(event) {
-        this.setState({notifyTime:event.target.value})
+        let now = new Date()
+        let h = event.target.value.substring(0,2)
+        let m = event.target.value.substring(3,5)
+        h = parseInt(h);
+        m = parseInt(m)
+        let local = new Date(now.getFullYear(), now.getMonth(), now.getDay(), h, m)
+        let utc = "" + local.getUTCHours() + ":" + local.getUTCMinutes()
+        this.convertDisplay(utc)
+        this.setState({notifyTime:utc})
+    }
+
+    convertDisplay(time) {
+        let utc = time.split(/[.,\/ :]/)
+        let h = utc[0];
+        let m = utc[1];
+        if(h.length == 1) {
+            h = "0" + h
+        }
+        if(m.length == 1) {
+            m = "0" + m
+        }
+        let comp = h + ":" + m;
+        this.setState({displayTime:comp})
     }
 
     onIsSMSChange(event) {
@@ -58,7 +82,7 @@ export default class EditUser extends Component {
     }
     
     processResponse(res) {
-        if (res.status === 200) {
+        if (res.status === 201) {
             this.props.updateUser(this.state);
             this.props.history.push(`/dashboard`);
         }
@@ -74,6 +98,7 @@ export default class EditUser extends Component {
         e.preventDefault();
         // console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
+        console.log(this.state)
         axios.post('http://localhost:5005/users/update/'+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
@@ -82,10 +107,24 @@ export default class EditUser extends Component {
         const email = this.state.email;
         const phone = this.state.phone;
         const notifyTime = this.state.notifyTime;
+        let displayTime = this.state.displayTime;
         const isEmail = this.state.isEmail;
         const isSMS = this.state.isSMS;
         const msg = this.state.msg;
 
+        let utc = notifyTime.split(/[.,\/ :]/)
+        let hf = utc[0];
+        let mf = utc[1];
+        let temp = new Date();
+        let now = new Date(Date.UTC(temp.getUTCFullYear(), temp.getUTCMonth(), temp.getUTCDay(), hf, mf, temp.getUTCSeconds(), temp.getUTCMilliseconds()))
+        let local = now.toLocaleTimeString()
+        let localSplit = local.split(/[.,\/ :]/)
+        let h = localSplit[0];
+        if(h.length == 1) {
+            h = 0 + h
+        }
+        displayTime = h + ":" + localSplit[1]
+        console.log(displayTime)
         return (
             <div className="login-container">
                 <div className="entered-info">
@@ -126,7 +165,7 @@ export default class EditUser extends Component {
                         <div className="padded-div-top-btm">
                             <div className="form-group"> 
                                 <label><h2>Notification Time: </h2></label>
-                                <input type="time" value={notifyTime} onChange={this.onNotifyTimeChange}
+                                <input type="time" value={displayTime} onChange={this.onNotifyTimeChange}
                                 />
                             </div>
                         </div>
