@@ -2,6 +2,37 @@ const router = require('express').Router();
 let User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
+const multer = require('multer');
+const path = require("path");
+const express = require('express');
+
+
+const storage = multer.diskStorage({
+  destination: "./../public/img/",
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(fiel.originalname));
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits:{filesize: 1000000},
+  fileFilter: function(req, file, cb) {
+    checkFileType(file, cb)
+  }
+}).single('uploadImage');
+
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png|gif/
+  const extname = filetypes.test(path.extname(fiel.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if(mimetype && extname) {
+    return cb(null,true)
+  } else {
+    cb("Error: Images only")
+  }
+}
 
 router.route('/').get((req, res) => {
   User.find()
@@ -100,12 +131,6 @@ router.route('/update/:id').post([
         user.isEmail = req.body.isEmail;
       }
 
-      if(req.body.isSMS == null) {
-        user.isSMS = user.isSMS;
-      } else {
-        user.isSMS = req.body.isSMS;
-      }
-
       user.save()
         .then(() => res.status(201).json({message: "Account updated"}))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -134,6 +159,21 @@ router.route('/addplant/:id').post([
   }
 
   let now = new Date();
+  let imgPath = ""
+  upload(req, res, (err) => {
+    if(err) {
+      res.json({message: "File Upload Error"})
+    } else {
+      if(req.file == undefined) {
+        res.json({message: "No file uploaded"})
+      } else {
+        res.json({message: "File uploaded"})
+        file: `../../public/img${req.file.filename}`
+        imgPath = `../../public/img${req.file.filename}`
+      }
+    }
+  })
+
   User.findOneAndUpdate({
     _id: req.params.id,
   }, {
@@ -143,6 +183,7 @@ router.route('/addplant/:id').post([
         "daystowater": req.body.daystowater,
         "dateCreated": now,
         "planttype": req.body.planttype,
+        "plantImage": imgPath,
       }]
     }
   })
@@ -191,7 +232,6 @@ router.route('/updateplant/:id').post([
     res.json({message: msgs});
     return;
   }
-
   User.findOneAndUpdate({
     _id: req.params.id,
   }, {
@@ -214,6 +254,21 @@ router.route('/updateplant/:id').post([
       now = new Date();
     }
 
+    let imgPath = ""
+    upload(req, res, (err) => {
+      if(err) {
+        res.json({message: "File Upload Error"})
+      } else {
+        if(req.file == undefined) {
+          res.json({message: "No file uploaded"})
+        } else {
+          res.json({message: "File uploaded"})
+          file: `../../public/img${req.file.filename}`
+          imgPath = `../../public/img${req.file.filename}`
+        }
+      }
+    })
+
     User.findOneAndUpdate({
       _id: req.params.id,
     }, {
@@ -223,6 +278,7 @@ router.route('/updateplant/:id').post([
           "daystowater": req.body.daystowater,
           "dateCreated": now,
           "planttype": req.body.planttype,
+          "plantImage": imgPath,
         }]
       }
     })
