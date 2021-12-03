@@ -18,6 +18,7 @@ export default class AddPlant extends Component {
         this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
     }
     
+    
     onPlantNameChange(event) {
         this.setState({plantname: event.target.value});
     }

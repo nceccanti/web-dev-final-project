@@ -7,12 +7,14 @@ export default class EditUser extends Component {
         super(props)
 
         let user = this.props.user;
-        // console.log(this.props);
+        console.log(this.props);
 
         this.state = {
             username:user.username,
+            _id:user._id,
             email:user.email, 
             phone:user.phone,
+            notifyTime:user.notifyTime,
             isEmail:user.isEmail,
             isSMS:user.isSMS,
             msg: ""
@@ -22,6 +24,7 @@ export default class EditUser extends Component {
         this.onPhoneChange = this.onPhoneChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsEmailChange = this.onIsEmailChange.bind(this);
+        this.onNotifyTimeChange = this.onNotifyTimeChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsSMSChange = this.onIsSMSChange.bind(this);
     }
@@ -42,6 +45,10 @@ export default class EditUser extends Component {
         this.setState({isEmail: event.target.checked});
     }
 
+    onNotifyTimeChange(event) {
+        this.setState({notifyTime:event.target.value})
+    }
+
     onIsSMSChange(event) {
         this.setState({isSMS: event.target.checked});
     }
@@ -51,7 +58,7 @@ export default class EditUser extends Component {
     }
     
     processResponse(res) {
-        if (res.status === 201) {
+        if (res.status === 200) {
             this.props.updateUser(this.state);
             this.props.history.push(`/dashboard`);
         }
@@ -65,7 +72,7 @@ export default class EditUser extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+        // console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
         axios.post('http://localhost:5005/users/update/'+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
@@ -74,6 +81,7 @@ export default class EditUser extends Component {
         const username = this.state.username;
         const email = this.state.email;
         const phone = this.state.phone;
+        const notifyTime = this.state.notifyTime;
         const isEmail = this.state.isEmail;
         const isSMS = this.state.isSMS;
         const msg = this.state.msg;
@@ -111,6 +119,14 @@ export default class EditUser extends Component {
                                     className="form-control"    
                                     onChange={this.onPhoneChange}
                                     value={phone}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="padded-div-top-btm">
+                            <div className="form-group"> 
+                                <label><h2>Notification Time: </h2></label>
+                                <input type="time" value={notifyTime} onChange={this.onNotifyTimeChange}
                                 />
                             </div>
                         </div>

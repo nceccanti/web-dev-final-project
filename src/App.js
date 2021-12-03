@@ -51,8 +51,9 @@ export default class App extends Component {
     // console.log("User authenticated");
     delete user.password;
     localStorage.setItem("currentUser", user.token);
-    this.setState({currentUser:user});
     this.setState({plants:user.plants});
+    delete user.plants;
+    this.setState({currentUser:user});
   }
 
   addPlantToPlantList(plant) {
@@ -91,11 +92,8 @@ export default class App extends Component {
   }
 
   updateUser(user) {
-    this.setState({username: user.username});
-    this.setState({email:user.email});
-    this.setState({phone:user.phone});
-    this.setState({isEmail:user.isEmail});
-    this.setState({isSMS:user.isSMS});
+    // console.log(this.state);
+    this.setState({currentUser: user});
   }
 
   render () {
