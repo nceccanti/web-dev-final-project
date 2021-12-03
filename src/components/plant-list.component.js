@@ -23,7 +23,7 @@ export default class PlantList extends Component {
         <div className="dashboard-container">
             <h1>Your Plants:</h1>
             <div className="container padded-div-top-btm">
-                <div className="row">
+                <div className="row justify-content-center">
                    {cards}
                     <div className="card mx-auto text-center" style={{width:"20rem"}}>
                         <div className="card-body">
