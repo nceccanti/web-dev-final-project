@@ -6,8 +6,7 @@ const plantSchema = new Schema({
   plantname: { type: String, required: true },
   daystowater: { type: Number, required: true },
   dateCreated: { type: Date, required: true },
-  planttype: { type: Number },
-  plantImage: { type: String }
+  planttype: { type: Number }
 });
 
 const userSchema = new Schema({
