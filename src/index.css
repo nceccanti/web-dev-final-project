@@ -11,15 +11,6 @@
   min-width: 150px;
 }
 
-.logo {
-    width: 20%;
-}
-
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-}
-
 body {
     color: #292929;
     background-color: #5CDB95;
@@ -47,6 +38,11 @@ code {
     margin-bottom: 10px;
 }
 
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+}
+
 .dashboard-container {
     padding: 50px;
     text-align: center;
@@ -65,7 +61,6 @@ code {
 .home-content {
     text-align: center;
     border-style: dotted;
-    border-radius: 25px;
     background-color: #8EE4AF;
     color: #05386B;
     padding-top: 50px;
@@ -84,16 +79,18 @@ code {
 }
 
 .login-container {
-  /* background-color: #379683; */
   background-color: #8EE4AF;
-  border-radius: 25px;
   padding: 75px;
   color: #05386B;
   font-size: large;
 }
 
+.logo {
+    width: 20%;
+}
+
+
 .navbar {
-    /* background-color: #8EE4AF; */
     background-color: #EDF5E1;
 }
 
@@ -111,6 +108,12 @@ code {
 .padded-div-top-btm {
     padding-top: 25px;
     padding-bottom: 25px;
+}
+
+.page-footer {
+    color: #05386B;
+    background-color: #EDF5E1;
+    
 }
 
 .sign-up {

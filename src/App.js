@@ -112,9 +112,10 @@ export default class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar logout={this.logout} currentUser={this.state.currentUser}/>
+          
 
           <div className="container">
+            <Navbar logout={this.logout} currentUser={this.state.currentUser}/>
 
             {/* <span className="authentication-check">{p}</span> */}
 
@@ -130,6 +131,13 @@ export default class App extends Component {
             <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
             <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
             <Route path="/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser}/>)} />
+
+
+            <footer class="page-footer font-small">
+              <div class="footer-copyright text-center py-3">2021<br></br>Nic Ceccanti &#8226; Byron Norman &#8226; Nathan Rubino<br></br>
+                <a href="https://github.com/nceccanti/web-dev-final-project"> Visit the GitHub repo used to make this website</a>
+              </div>
+          </footer>
           </div>
 
 

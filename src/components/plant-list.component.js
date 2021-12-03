@@ -20,12 +20,12 @@ export default class PlantList extends Component {
             cards.push(<div className="card m-3" style={{width:"20rem"}}><Plant plantname={plants[i].plantname} daystowater={plants[i].daystowater} dateCreated={local}/></div>);
         }
         return (
-        <div className="dashboard-container">
+        <div className="dashboard-container login-container">
             <h1>Your Plants:</h1>
             <div className="container padded-div-top-btm">
                 <div className="row justify-content-center">
                    {cards}
-                    <div className="card mx-auto text-center" style={{width:"20rem"}}>
+                    <div className="card text-center" style={{width:"20rem"}}>
                         <div className="card-body">
                             <Link to="/addplant" style={{ textDecoration: 'none' }}>
                                 <h4 className="card-title">Add New Plant</h4>
