@@ -14,10 +14,9 @@ export default class EditUser extends Component {
             email:user.email, 
             phone:user.phone,
             isEmail:user.isEmail,
-            isSMS:user.isSMS 
+            isSMS:user.isSMS,
+            msg: ""
         }
-
-        this.statusMsg = ""
 
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPhoneChange = this.onPhoneChange.bind(this);
@@ -48,16 +47,18 @@ export default class EditUser extends Component {
     }
 
     onMessageChange(message) {
-        this.statusMsg = message;
+        this.setState({msg: message})
     }
     
     processResponse(res) {
         if (res.status === 201) {
             this.props.updateUser(this.state);
-            this.onMessageChange("Changes saved");
+            this.props.history.push(`/dashboard`);
         }
         else if (res.status === 500) {
-            this.onMessageChange("Could not create account");
+            this.onMessageChange("Could not update account");
+        } else {
+            this.onMessageChange(res.data.message);
         }
     }
 
@@ -75,7 +76,7 @@ export default class EditUser extends Component {
         const phone = this.state.phone;
         const isEmail = this.state.isEmail;
         const isSMS = this.state.isSMS;
-        const msg = this.statusMsg;
+        const msg = this.state.msg;
 
         return (
             <div className="login-container">

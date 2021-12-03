@@ -23,7 +23,8 @@ export default class EditPlant extends Component {
             oldplantname:plant.plantname,
             daystowater:plant.daystowater, 
             dateCreated:plant.dateCreated,
-            planttype:plant.planttype
+            planttype:plant.planttype,
+            message: ""
         };
         
         this.processResponse = this.processResponse.bind(this);
@@ -53,15 +54,18 @@ export default class EditPlant extends Component {
     }
 
     processResponse(res) {
-        this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname,planttype:this.state.planttype})
-        this.props.history.push(`/dashboard`);
+        if(res.status == 201) {
+            this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname,planttype:this.state.planttype})
+            this.props.history.push(`/dashboard`);
+        }
+        this.setState({message: res.data.message})
     }
 
 
     handleSubmit(e) {
         e.preventDefault();
         // console.log(this.state);
-        let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater,oldplantname:this.state.oldplantname,planttype:this.state.planttype}]};
+        let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,oldplantname:this.state.oldplantname,planttype:this.state.planttype};
         // Waiting for backend implementation
         axios.post('http://localhost:5005/users/updateplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
@@ -75,10 +79,13 @@ export default class EditPlant extends Component {
         const plantname = this.state.plantname;
         const daystowater = this.state.daystowater;
         // const dateCreated = this.state.dateCreated;
+        const msg = this.state.message;
 
         return (
+
             <form onSubmit={this.handleSubmit.bind(this)} method="POST">
                 <div className="form-group"> 
+                    <p style={{color:"red"}}>{msg}</p>
                     <label>Plant Name: </label>
                     <input type="text"
                         required

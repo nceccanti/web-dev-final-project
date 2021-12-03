@@ -4,8 +4,24 @@ const authorize = require("../middleware/auth")
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const userSchema = require("../models/user.model");
+const { body, validationResult } = require('express-validator');
+const app = express();
 
-router.route('/login').post((req, res) => {
+
+router.route('/login').post([
+  body('email').trim().isEmail().withMessage("Email must be a valid email.").normalizeEmail().toLowerCase(),
+  body('password').trim().isLength(8).withMessage("Password length needs to be a minimum of 8 characters."),
+],(req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      let msgs = "";
+      errors.array().forEach(error => {
+        msgs += error.msg + "  ";
+      })
+      res.json({message: msgs});
+      return;
+    }
+
     let getUser;
     userSchema.findOne({
       email: req.body.email,
@@ -44,11 +60,25 @@ router.route('/login').post((req, res) => {
       })
   })
 
-  router.route('/signup').post((req, res) => {
+  router.route('/signup').post([
+    body('username').trim().escape().isLength(3).withMessage("Username must have a minimum of 3 characters."),
+    body('email').trim().isEmail().withMessage("Email must be a valid email.").normalizeEmail().toLowerCase(),
+    body('password').trim().isLength(8).withMessage("Password length needs to be a minimum of 8 characters."),
+  ],(req, res) => {
+      const errors = validationResult(req);
+      if(!errors.isEmpty()) {
+        let msgs = "";
+        errors.array().forEach(error => {
+          msgs += error.msg + "  ";
+        })
+        console.log(msgs);
+        res.json({message: msgs})
+        return;
+      }
+
       let now = new Date();
       let local = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0, 0)
       let defaultTime = local.getUTCHours();
-      console.log(defaultTime)
       bcrypt.hash(req.body.password, 10).then((hash) => {
           const user = new userSchema({
               username: req.body.username,

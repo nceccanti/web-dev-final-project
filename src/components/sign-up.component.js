@@ -33,31 +33,11 @@ export default class SignUp extends Component {
     }
     
     processResponse(res) {
-        let userValid = false;
-        const user = /^[a-z0-9_\.]+$/;
-        if(!user.test(this.state.username)) {
-            userValid = false
-        } else {
-            userValid = true
-        }
-
-        let passValid = false;
-        const pass = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/
-        if(!pass.test(this.state.password)) {
-            passValid = false
-        } else {
-            passValid = true;
-        }
-
-        if (res.status === 201 && userValid && passValid) {
-            this.onMessageChange("Account created");
+        if (res.status === 201) {
+            this.onMessageChange(res.data.message);
         }
         else if (res.status === 500) {
             this.onMessageChange("Could not create account");
-        } else if(!userValid) {
-            this.onMessageChange("Invalid username. Try removing special characters.")
-        } else if(!passValid) {
-            this.onMessageChange("Password must contain 8 characters, at least one number, and one special character.")
         }
     }
 
@@ -65,8 +45,12 @@ export default class SignUp extends Component {
     handleSubmit(e) {
         e.preventDefault();
         console.log(this.state);
-        // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/api/auth/signup', this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        // CONNECT TO BACKEND ENDPOINT HERE .then(res => this.onMessageChange(res.message))
+        axios.post('http://localhost:5005/api/auth/signup', this.state).then(res => {
+            this.processResponse(res)
+        }).catch(res =>{
+            this.processResponse(res)
+        });
     }
   
     render() {

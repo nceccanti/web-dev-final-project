@@ -9,7 +9,8 @@ export default class AddPlant extends Component {
         this.state = {currentUser:this.props.currentUser,
             plantname:"",
             daystowater:"",
-            planttype:null
+            planttype:null,
+            msg: ""
         };
 
         this.onPlantNameChange = this.onPlantNameChange.bind(this);
@@ -35,25 +36,29 @@ export default class AddPlant extends Component {
             this.setState({daystowater: ""});
         }
     }
+
+    onMessageChange(message) {
+        this.setState({msg: message})
+    }
     
     processResponse(res) {
-        // if (res.status === 201) {
-        //     this.onMessageChange("Account created");
-        // }
-        // else if (res.status === 500) {
-        //     this.onMessageChange("Could not create account");
-        // }
-        let now = new Date();
-        let nowString = now.toString();
-        this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString,planttype:this.state.planttype});
-        this.props.history.push(`/dashboard`);
+        if (res.status === 201) {
+            let now = new Date();
+            let nowString = now.toString();
+            this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString,planttype:this.state.planttype});
+            this.props.history.push(`/dashboard`);
+        }
+        else if (res.status === 500) {
+            this.onMessageChange("Could not create account");
+        }
+        this.onMessageChange(res.data.message)
     }
 
 
     handleSubmit(e) {
         e.preventDefault();
         console.log(this.state);
-        let rqst ={plants:[{plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype}]};
+        let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype};
         // CONNECT TO BACKEND ENDPOINT HERE
         axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
@@ -61,9 +66,11 @@ export default class AddPlant extends Component {
     render() {
         const plantname = this.state.email;
         const daystowater = this.state.daystowater;
+        const msg = this.state.msg;
 
         return (
             <div className="login-container">
+                <p style={{color:"red"}}>{msg}</p>
                 <form onSubmit={this.handleSubmit.bind(this)} method="POST">
                     <div className="form-group"> 
                         <label><h2>Plant Name: </h2></label>

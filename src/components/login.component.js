@@ -19,15 +19,6 @@ export default class Login extends Component {
     }
     
     onPasswordChange(event) {
-
-        // let passValid = false;
-        // const pass = /[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/
-        // if(!pass.test(this.state.password)) {
-        //     passValid = false
-        // } else {
-        //     passValid = true;
-        // }
-        // console.log(passValid)
         this.setState({password: event.target.value});
     }
 
@@ -49,7 +40,7 @@ export default class Login extends Component {
         e.preventDefault();
         
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => this.onAuthenticationFailed(res));
+        axios.post('http://localhost:5005/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
     }
   
     render() {
