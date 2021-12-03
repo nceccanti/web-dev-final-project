@@ -21,11 +21,11 @@ export default class PlantList extends Component {
         }
         return (
         <div className="dashboard-container">
-            <h1>Your Plants</h1>
-            <div className="container">
+            <h1>Your Plants:</h1>
+            <div className="container padded-div-top-btm">
                 <div className="row">
                    {cards}
-                    <div className="card m-3 text-center" style={{width:"20rem"}}>
+                    <div className="card mx-auto text-center" style={{width:"20rem"}}>
                         <div className="card-body">
                             <Link to="/addplant" style={{ textDecoration: 'none' }}>
                                 <h4 className="card-title">Add New Plant</h4>

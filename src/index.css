@@ -37,13 +37,24 @@ code {
     text-decoration: underline;
 }
 
+/* .add-plant-container {
+    padd
+} */
+
 .btn {
   background-color: #05386B;
+}
+
+.card {
+    margin: 0 auto; 
+    float: none; 
+    margin-bottom: 10px;
 }
 
 .dashboard-container {
     padding: 50px;
     text-align: center;
+    color: #05386B;
 }
 
 .dashboard-container .row {
