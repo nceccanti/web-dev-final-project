@@ -37,11 +37,13 @@ export default class App extends Component {
     this.addPlantToPlantList = this.addPlantToPlantList.bind(this);
     this.deletePlantFromList = this.deletePlantFromList.bind(this);
     this.updatePlantInList = this.updatePlantInList.bind(this);
+    console.log(this.props);
   }
 
   logout() {
     if (this.state.currentUser != null) {
-      localStorage.removeItem('currentUser');
+      sessionStorage.removeItem('currentUser');
+      sessionStorage.removeItem('plants');
       this.setState({currentUser:null});
       this.setState({plants:null});
     }
@@ -50,10 +52,12 @@ export default class App extends Component {
   onUserAuthenticated(user) {
     // console.log("User authenticated");
     delete user.password;
-    localStorage.setItem("currentUser", user.token);
+    // console.log(JSON.stringify(user.plants));
+    // sessionStorage.setItem("plants", JSON.stringify(user.plants));
     this.setState({plants:user.plants});
     delete user.plants;
     this.setState({currentUser:user});
+    sessionStorage.setItem("currentUser", user.token);
   }
 
   addPlantToPlantList(plant) {

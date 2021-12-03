@@ -10,12 +10,14 @@ export default class AddPlant extends Component {
             plantname:"",
             daystowater:"",
             planttype:null,
+            plantImage:null,
             msg: ""
         };
 
         this.onPlantNameChange = this.onPlantNameChange.bind(this);
         this.onDaysToWaterChange = this.onDaysToWaterChange.bind(this);
         this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
+        // this.onPlantImageChanged = this.onPlantImageChanged(this);
     }
     
     
@@ -38,6 +40,16 @@ export default class AddPlant extends Component {
         }
     }
 
+    // onPlantImageChanged(event) {
+    //     // console.log(this.state);
+    //     console.log(event);
+    //     if(event.target) {
+    //         this.setState({plantImage:event.target.files[0]});
+    //     }
+    // }
+
+    onPlantImageChanged = (event) => {this.setState({plantImage:event.target.files[0]});}
+
     onMessageChange(message) {
         this.setState({msg: message})
     }
@@ -46,7 +58,12 @@ export default class AddPlant extends Component {
         if (res.status === 201) {
             let now = new Date();
             let nowString = now.toString();
-            this.props.addPlantToPlantList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:nowString,planttype:this.state.planttype});
+            console.log(res);
+            this.props.addPlantToPlantList({plantname: this.state.plantname,
+                daystowater:this.state.daystowater,
+                dateCreated:nowString,
+                planttype:this.state.planttype,
+            });
             this.props.history.push(`/dashboard`);
         }
         else if (res.status === 500) {
@@ -58,10 +75,23 @@ export default class AddPlant extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
-        let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype};
+        
+        var bodyFormData = new FormData();
+
+        bodyFormData.append('plantImage', this.state.plantImage, this.state.plantImage.name);
+        bodyFormData.append('plantname', this.state.plantname);
+        bodyFormData.append('planttype', this.state.planttype);
+        bodyFormData.append('daystowater', this.state.daystowater);
+
+
+        console.log(bodyFormData);
+        // let rqst ={plantname: this.state.plantname,
+        //         daystowater:this.state.daystowater,
+        //         planttype:this.state.planttype,
+        //         plantImage:this.state.plantImage
+        //     };
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser._id, bodyFormData).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {
@@ -94,6 +124,16 @@ export default class AddPlant extends Component {
                                 className="form-control"    
                                 onChange={this.onDaysToWaterChange}
                                 value={daystowater}
+                            />
+                        </div>
+                    </div>
+                    <div className="padded-div-top-btm">
+                        <div className="form-group"> 
+                            <label><h2>Image of plant: </h2></label>
+                            <input type="file"
+                                className="form-control"    
+                                onChange={this.onPlantImageChanged}
+                                name="plantImage"
                             />
                         </div>
                     </div>
