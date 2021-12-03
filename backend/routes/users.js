@@ -159,21 +159,6 @@ router.route('/addplant/:id').post([
   }
 
   let now = new Date();
-  let imgPath = ""
-  upload(req, res, (err) => {
-    if(err) {
-      res.json({message: "File Upload Error"})
-    } else {
-      if(req.file == undefined) {
-        res.json({message: "No file uploaded"})
-      } else {
-        res.json({message: "File uploaded"})
-        file: `../../public/img${req.file.filename}`
-        imgPath = `../../public/img${req.file.filename}`
-      }
-    }
-  })
-
   User.findOneAndUpdate({
     _id: req.params.id,
   }, {
@@ -183,7 +168,6 @@ router.route('/addplant/:id').post([
         "daystowater": req.body.daystowater,
         "dateCreated": now,
         "planttype": req.body.planttype,
-        "plantImage": imgPath,
       }]
     }
   })
@@ -254,21 +238,6 @@ router.route('/updateplant/:id').post([
       now = new Date();
     }
 
-    let imgPath = ""
-    upload(req, res, (err) => {
-      if(err) {
-        res.json({message: "File Upload Error"})
-      } else {
-        if(req.file == undefined) {
-          res.json({message: "No file uploaded"})
-        } else {
-          res.json({message: "File uploaded"})
-          file: `../../public/img${req.file.filename}`
-          imgPath = `../../public/img${req.file.filename}`
-        }
-      }
-    })
-
     User.findOneAndUpdate({
       _id: req.params.id,
     }, {
@@ -278,7 +247,6 @@ router.route('/updateplant/:id').post([
           "daystowater": req.body.daystowater,
           "dateCreated": now,
           "planttype": req.body.planttype,
-          "plantImage": imgPath,
         }]
       }
     })

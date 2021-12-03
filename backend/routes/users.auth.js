@@ -75,7 +75,7 @@ router.route('/login').post([
 
       let now = new Date();
       let local = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 9, 0, 0, 0)
-      let defaultTime = local.getUTCHours();
+      let defaultTime = local.getUTCHours() + ":00";
       bcrypt.hash(req.body.password, 10).then((hash) => {
           const user = new userSchema({
               username: req.body.username,
