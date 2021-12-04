@@ -8,12 +8,8 @@ const axios = require("axios");
 const multer = require('multer');
 const path = require("path");
 const notify = require('./notify')
-require("dotenv").config();
-
-require('dotenv').config();
-
+const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
 const app = express();
-const port = process.env.PORT || 5005;
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +32,14 @@ app.use('/users', usersRouter);
 const userAuth = require("./routes/users.auth");
 app.use('/api/auth', userAuth);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  });
+}
+
+const port = process.env.PORT || 5005;
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
@@ -50,7 +54,7 @@ function timeDifference(current, added) {
 //testing purposes only
 function isWaterDay(id, name) {
   let now = new Date();
-  const URL = "http://localhost:5005/users/" + id
+  const URL = `https://hydroclock.herokuapp.com/users/` + id
   axios.get(URL).then(res => {
     for(let i = 0; i < res.data.plants.length; i++) {
       if(res.data.plants[i].plantname == name) {
@@ -63,7 +67,7 @@ function isWaterDay(id, name) {
 
 schedule.scheduleJob("* * * * *", () => {
   let now = "" + new Date().getUTCHours() + ":" + new Date().getUTCMinutes();
-  axios.get("http://localhost:5005/users/").then(res => {
+  axios.get(`https://hydroclock.herokuapp.com/users/`).then(res => {
     for(let i = 0; i < res.data.length; i++) {
       if(res.data[i].notifyTime == now && res.data[i].plants.length > 0 && (res.data[i].isEmail || res.data[i].isSMS)) {
         notifyUser(res.data[i]._id);
@@ -74,7 +78,7 @@ schedule.scheduleJob("* * * * *", () => {
 
 function notifyUser(id) {
   let now = new Date();
-  let url = "http://localhost:5005/users/" + id
+  let url = `https://hydroclock.herokuapp.com/users/` + id
   axios.get(url).then(res => {
       let plantText = "";
       let plantHTML = "";
@@ -101,4 +105,3 @@ function notifyUser(id) {
       }
   });
 }
-
