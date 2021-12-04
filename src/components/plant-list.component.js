@@ -7,9 +7,17 @@ export default class PlantList extends Component {
     constructor(props) {
         super(props);
 
-        console.log(this.props);
+        // console.log(this.props);
         this.state = {plants:this.props.plants};
     }
+
+componentWillMount() {
+    if(null===this.props.currentUser) {
+        let sessionData=this.props.getUserDataFromSession();
+        this.setState({plants:sessionData.plants});
+        console.log(this.state);
+    }
+}
 
     render() {
         let cards = [];

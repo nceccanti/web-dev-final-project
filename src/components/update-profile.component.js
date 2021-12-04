@@ -7,7 +7,11 @@ export default class EditUser extends Component {
         super(props)
 
         let user = this.props.user;
-        console.log(this.props);
+        if(null===this.props.user) {
+            let sessionData=this.props.getUserDataFromSession();
+            user = sessionData.user;
+        }
+        // console.log(this.props);
 
         this.state = {
             username:user.username,
@@ -21,6 +25,11 @@ export default class EditUser extends Component {
             displayTime: "",
         }
 
+        let nTime = "12:00";
+        if(this.state.notifyTime) {
+            nTime = this.state.notifyTime;
+        }
+
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPhoneChange = this.onPhoneChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -28,7 +37,30 @@ export default class EditUser extends Component {
         this.onNotifyTimeChange = this.onNotifyTimeChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsSMSChange = this.onIsSMSChange.bind(this);
-        this.setState({displayTime: this.convertDisplay(this.state.notifyTime)})
+        this.setState({displayTime: this.convertDisplay(nTime)})
+    }
+
+    componentWillMount() {
+        if(null===this.props.user) {
+            let sessionData=this.props.getUserDataFromSession();
+            let user = sessionData.user;
+            let nTime = "12:00";
+            if(user.notifyTime) {
+                nTime = user.notifyTime;
+            }
+            else {
+                user.notifyTime = "";
+            }
+            this.setState({plants:sessionData.plants});
+            this.setState({username:user.username});
+            this.setState({_id:user._id});
+            this.setState({email:user.email});
+            this.setState({phone:user.phone});
+            this.setState({notifyTime:user.notifyTime});
+            this.setState({isEmail:user.isEmail});
+            this.setState({isSMS:user.isSMS});
+            this.setState({displayTime: this.convertDisplay(nTime)})
+        }
     }
 
     onUsernameChange(event) {
@@ -93,7 +125,6 @@ export default class EditUser extends Component {
         }
     }
 
-
     handleSubmit(e) {
         e.preventDefault();
         // console.log(this.state);
@@ -101,6 +132,10 @@ export default class EditUser extends Component {
         const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
         axios.post(`${back}/users/update/`+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
+
+    onTestNotifications = () => {
+        axios.post('http://localhost:5005/users/notify/'+this.props.user._id, this.state).then(res => console.log(res)).catch(res => console.log(res));
+      };
   
     render() {
         const username = this.state.username;
@@ -199,6 +234,12 @@ export default class EditUser extends Component {
                             <input type="submit" value="Submit" className="btn btn-block btn-primary" />
                         </div>
                     </form>
+                    <div>
+                        <label><h2>Test Notifications (will send notifications to email and/or phone based off the settings above).: </h2></label>
+                        <button onClick={this.onTestNotifications} className="btn btn-block btn-primary">
+                            Test Notifications
+                        </button>
+                    </div>
                 </div>
             </div>
         )

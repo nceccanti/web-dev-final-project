@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css"
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import React, {Component} from 'react';
 
 import Navbar from "./components/navbar.component";
@@ -33,11 +33,13 @@ export default class App extends Component {
 
     this.onUserAuthenticated = this.onUserAuthenticated.bind(this);
     this.logout = this.logout.bind(this);
+    this.getUserDataFromSession = this.getUserDataFromSession.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.addPlantToPlantList = this.addPlantToPlantList.bind(this);
     this.deletePlantFromList = this.deletePlantFromList.bind(this);
     this.updatePlantInList = this.updatePlantInList.bind(this);
-    console.log(this.props);
+
+    // console.log(this.props);
   }
 
   logout() {
@@ -53,16 +55,31 @@ export default class App extends Component {
     // console.log("User authenticated");
     delete user.password;
     // console.log(JSON.stringify(user.plants));
-    // sessionStorage.setItem("plants", JSON.stringify(user.plants));
+    sessionStorage.setItem("plants", JSON.stringify(user.plants));
     this.setState({plants:user.plants});
     delete user.plants;
     this.setState({currentUser:user});
-    sessionStorage.setItem("currentUser", user.token);
+    sessionStorage.setItem("currentUser", JSON.stringify(user));
+  }
+
+  getUserDataFromSession() {
+    let sessionUser = JSON.parse(sessionStorage.getItem("currentUser"));
+    let sessionPlants = JSON.parse(sessionStorage.getItem("plants"));
+
+    if (sessionUser&&sessionPlants) {
+      this.setState({currentUser:sessionUser});
+      this.setState({plants:sessionPlants})
+    }
+    else {
+      <Redirect push to="/login" />
+    }
+    return {user:sessionUser, plants:sessionPlants};
   }
 
   addPlantToPlantList(plant) {
     var joined = this.state.plants.concat(plant);
     this.setState({ plants: joined })
+    sessionStorage.setItem("plants", JSON.stringify(joined));
   }
 
   deletePlantFromList(plant) {
@@ -77,6 +94,7 @@ export default class App extends Component {
     if (index) {
       plantsCopy.splice(index, 1);
       this.setState({plants: plantsCopy});
+      sessionStorage.setItem("plants", JSON.stringify(plantsCopy));
     }
   }
 
@@ -92,23 +110,17 @@ export default class App extends Component {
     if (index) {
       plantsCopy.splice(index, 1, plant);
       this.setState({plants: plantsCopy});
+      sessionStorage.setItem("plants", JSON.stringify(plantsCopy));
     }
   }
 
   updateUser(user) {
     // console.log(this.state);
     this.setState({currentUser: user});
+    sessionStorage.setItem("currentUser", JSON.stringify(user));
   }
 
   render () {
-    const currentUser = this.state.currentUser;
-    let p
-    if (currentUser) {
-      p = <p><h3>Authenticated!</h3></p>;
-    }
-    else {
-      p = <p><h3>Not Authenticated!</h3></p>;
-    }
     return (
       <Router>
         <div className="App">
@@ -117,24 +129,21 @@ export default class App extends Component {
           <div className="container">
             <Navbar logout={this.logout} currentUser={this.state.currentUser}/>
 
-            {/* <span className="authentication-check">{p}</span> */}
-
-
             <Route path="/home" component={Home} />
-            <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants}/>)} />
+            <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants} getUserDataFromSession={this.getUserDataFromSession}/>)} />
             <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}
-            plantTypes={plantTypes}/>)} />
+            plantTypes={plantTypes} getUserDataFromSession={this.getUserDataFromSession}/>)} />
             <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-            deletePlantFromList={this.deletePlantFromList}/>)} />
+            deletePlantFromList={this.deletePlantFromList} getUserDataFromSession={this.getUserDataFromSession} plantTypes={plantTypes}/>)} />
             <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
-            updatePlantInList={this.updatePlantInList} plantTypes={plantTypes}/>)} />
+            updatePlantInList={this.updatePlantInList} plantTypes={plantTypes} getUserDataFromSession={this.getUserDataFromSession}/>)} />
             <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
             <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
-            <Route path="/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser}/>)} />
+            <Route path="/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser} getUserDataFromSession={this.getUserDataFromSession}/>)} />
 
 
-            <footer class="page-footer font-small">
-              <div class="footer-copyright text-center py-3">2021<br></br>Nic Ceccanti &#8226; Byron Norman &#8226; Nathan Rubino<br></br>
+            <footer className="page-footer font-small">
+              <div className="footer-copyright text-center py-3">2021<br></br>Nic Ceccanti &#8226; Byron Norman &#8226; Nathan Rubino<br></br>
                 <a href="https://github.com/nceccanti/web-dev-final-project"> Visit the GitHub repo used to make this website</a>
               </div>
           </footer>
