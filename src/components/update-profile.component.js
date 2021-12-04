@@ -116,7 +116,7 @@ export default class EditUser extends Component {
     processResponse(res) {
         if (res.status === 201) {
             this.props.updateUser(this.state);
-            this.props.history.push(`/dashboard`);
+            this.props.history.push(`/~t12r259/hydroclock/dashboard`);
         }
         else if (res.status === 500) {
             this.onMessageChange("Could not update account");
@@ -129,12 +129,11 @@ export default class EditUser extends Component {
         e.preventDefault();
         // console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
-        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`https://hydroclock.herokuapp.com/users/update/`+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post(`https://csci331-backend.herokuapp.com/users/update/`+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     onTestNotifications = () => {
-        axios.post('https://hydroclock.herokuapp.com/users/notify/'+this.props.user._id, this.state).then(res => console.log(res)).catch(res => console.log(res));
+        axios.post('https://csci331-backend.herokuapp.com/users/notify/'+this.props.user._id, this.state).then(res => console.log(res)).catch(res => console.log(res));
       };
   
     render() {

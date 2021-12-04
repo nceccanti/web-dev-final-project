@@ -59,7 +59,7 @@ export default class DeletePlant extends Component {
     
     processResponse(res) {
         this.props.deletePlantFromList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated})
-        this.props.history.push(`/dashboard`);
+        this.props.history.push(`/~t12r259/hydroclock/dashboard`);
     }
 
 
@@ -68,13 +68,12 @@ export default class DeletePlant extends Component {
         // console.log(this.state);
         let rqst ={plants:[{plantname: this.state.plantname}]};
         // CONNECT TO BACKEND ENDPOINT HERE
-        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`https://hydroclock.herokuapp.com/users/removeplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post(`https://csci331-backend.herokuapp.com/users/removeplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {
         e.preventDefault();
-        this.props.history.push(`/dashboard`);
+        this.props.history.push(`/~t12r259/hydroclock/dashboard`);
     }
   
     render() {

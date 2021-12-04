@@ -32,15 +32,14 @@ export default class Login extends Component {
         if (res.status === 200) {
             this.props.onUserAuthenticated(res.data.msg);
             localStorage.setItem("currentUser", res.data.msg.username);
-            this.props.history.push(`/dashboard`);
+            this.props.history.push(`/~t12r259/hydroclock/dashboard`);
         }
     }
     
     handleSubmit(e) {
         e.preventDefault();
         
-        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post("https://hydroclock.herokuapp.com/api/auth/login", this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
+        axios.post("https://csci331-backend.herokuapp.com/api/auth/login", this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
     }
   
     render() {
@@ -82,7 +81,7 @@ export default class Login extends Component {
                     </div>
                 </form>
                 <div className="sign-up">
-                    Don't have an account? <Link to="/signup">Sign Up</Link>
+                    Don't have an account? <Link to="/~t12r259/hydroclock/signup">Sign Up</Link>
                 </div>
             </div>
         )

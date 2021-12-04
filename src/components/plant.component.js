@@ -72,8 +72,8 @@ export default class Plant extends Component {
             <p className="card-text">Watering interval: {wateringInterval}</p>
             <p className="card-text">Days until next watering: {daystowater}</p>
             <p className="card-text">Since: {dateCreated}</p>
-            <Link to={{pathname: "/editplant", search:qString}} className="card-link">Edit</Link>
-            <Link to={{pathname: "/deleteplant", search:qString}} className="card-link">Delete</Link>
+            <Link to={{pathname: "/~t12r259/hydroclock/editplant", search:qString}} className="card-link">Edit</Link>
+            <Link to={{pathname: "/~t12r259/hydroclock/deleteplant", search:qString}} className="card-link">Delete</Link>
         </div>
         )
     }

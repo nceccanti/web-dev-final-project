@@ -78,7 +78,7 @@ export default class EditPlant extends Component {
     processResponse(res) {
         if(res.status === 201) {
             this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname,planttype:this.state.planttype})
-            this.props.history.push(`/dashboard`);
+            this.props.history.push(`/~t12r259/hydroclock/dashboard`);
         }
         this.setState({message: res.data.message})
     }
@@ -88,13 +88,12 @@ export default class EditPlant extends Component {
         e.preventDefault();
         // console.log(this.state);
         let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,oldplantname:this.state.oldplantname,planttype:this.state.planttype};
-        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`https://hydroclock.herokuapp.com/users/updateplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post(`https://csci331-backend.herokuapp.com/users/updateplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {
         e.preventDefault();
-        this.props.history.push(`/dashboard`);
+        this.props.history.push(`/~t12r259/hydroclock/dashboard`);
     }
   
     render() {
