@@ -68,11 +68,7 @@ export default class DeletePlant extends Component {
         // console.log(this.state);
         let rqst ={plants:[{plantname: this.state.plantname}]};
         // CONNECT TO BACKEND ENDPOINT HERE
-<<<<<<< HEAD
-        axios.post(`https://csci331-backend.herokuapp.com/users/removeplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
-=======
         axios.post('https://csci331-backend.herokuapp.com/users/removeplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
->>>>>>> d57394b8dc51e0055a3fb15fd314485923881157
     }
 
     handleCancel(e) {

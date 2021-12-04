@@ -39,12 +39,8 @@ export default class Login extends Component {
     handleSubmit(e) {
         e.preventDefault();
         
-<<<<<<< HEAD
-        axios.post("https://csci331-backend.herokuapp.com/api/auth/login", this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
-=======
         // CONNECT TO BACKEND ENDPOINT HERE
         axios.post('https://csci331-backend.herokuapp.com/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
->>>>>>> d57394b8dc51e0055a3fb15fd314485923881157
     }
   
     render() {

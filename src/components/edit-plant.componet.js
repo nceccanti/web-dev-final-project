@@ -88,12 +88,8 @@ export default class EditPlant extends Component {
         e.preventDefault();
         // console.log(this.state);
         let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,oldplantname:this.state.oldplantname,planttype:this.state.planttype};
-<<<<<<< HEAD
-        axios.post(`https://csci331-backend.herokuapp.com/users/updateplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
-=======
         // Waiting for backend implementation
         axios.post('https://csci331-backend.herokuapp.com/users/updateplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
->>>>>>> d57394b8dc51e0055a3fb15fd314485923881157
     }
 
     handleCancel(e) {
