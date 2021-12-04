@@ -104,36 +104,39 @@ export default class EditPlant extends Component {
         const msg = this.state.message;
 
         return (
-
-            <form onSubmit={this.handleSubmit.bind(this)} method="POST">
-                <div className="form-group"> 
-                    <p style={{color:"red"}}>{msg}</p>
-                    <label>Plant Name: </label>
-                    <input type="text"
-                        required
-                        className="form-control"
-                        onChange={this.onPlantNameChange}
-                        value={plantname}
-                    />
-                </div>
-                <div className="padded-div-top-btm">
-                    <label><h2>Plant Types: </h2>(Selection will autofill watering schedule field)</label>
-                    <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange} value={this.props.plantTypes[this.state.planttype]}/>
-                </div>
-                <div className="form-group"> 
-                    <label>Days to water: </label>
-                    <input type="number"
-                        required
-                        className="form-control"    
-                        onChange={this.onDaysToWaterChange}
-                        value={daystowater}
-                    />
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Edit Plant" className="btn btn-primary" />
-                    <input onClick={this.handleCancel} value="Cancel" className="btn btn-secondary" />
-                </div>
-            </form>
+            <div className="login-container">
+                <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+                    <div className="form-group"> 
+                        <p style={{color:"red"}}>{msg}</p>
+                        <label><h2>Plant Name: </h2></label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            onChange={this.onPlantNameChange}
+                            value={plantname}
+                        />
+                    </div>
+                    <div className="padded-div-top-btm">
+                        <label><h2>Plant Types: </h2>(Selection will autofill watering schedule field)</label>
+                        <Select options={this.props.plantTypes} isSearchable={true} isClearable={true} onChange={this.onPlantTypeChange} value={this.props.plantTypes[this.state.planttype]}/>
+                    </div>
+                    <div className="form-group"> 
+                        <label><h2>Days to water: </h2></label>
+                        <input type="number"
+                            required
+                            className="form-control"    
+                            onChange={this.onDaysToWaterChange}
+                            value={daystowater}
+                        />
+                    </div>
+                    <div className="form-group center-block">
+                        <div className="col-md-12 text-center padded-div-top-btm">
+                            <input type="submit" value="Edit Plant" className="btn btn-primary btn-lg"/>
+                            <input onClick={this.handleCancel} value="Cancel" className="btn btn-secondary btn-lg" />
+                        </div>
+                    </div>
+                </form>
+            </div>
         )
     }
 }
