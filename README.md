@@ -1,4 +1,4 @@
-# HyrdroClock
+# HydroClock
 ## Welcome to the GitHub page for HydroClock's development.
 
 Site hosted [here.](http://csci331.cs.montana.edu/~t12r259/hydroclock/)
