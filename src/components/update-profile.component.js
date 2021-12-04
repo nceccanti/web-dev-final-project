@@ -37,7 +37,7 @@ export default class EditUser extends Component {
         this.onNotifyTimeChange = this.onNotifyTimeChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsSMSChange = this.onIsSMSChange.bind(this);
-        this.setState({displayTime: this.convertDisplay(this.state.notifyTime)})
+        this.setState({displayTime: this.convertDisplay(nTime)})
     }
 
     componentWillMount() {
@@ -125,7 +125,6 @@ export default class EditUser extends Component {
         }
     }
 
-
     handleSubmit(e) {
         e.preventDefault();
         // console.log(this.state);
@@ -133,6 +132,10 @@ export default class EditUser extends Component {
         console.log(this.state)
         axios.post('http://localhost:5005/users/update/'+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
+
+    onTestNotifications = () => {
+        axios.post('http://localhost:5005/users/notify/'+this.props.user._id, this.state).then(res => console.log(res)).catch(res => console.log(res));
+      };
   
     render() {
         const username = this.state.username;
@@ -231,6 +234,12 @@ export default class EditUser extends Component {
                             <input type="submit" value="Submit" className="btn btn-block btn-primary" />
                         </div>
                     </form>
+                    <div>
+                        <label><h2>Test Notifications (will send notifications to email and/or phone based off the settings above).: </h2></label>
+                        <button onClick={this.onTestNotifications} className="btn btn-block btn-primary">
+                            Test Notifications
+                        </button>
+                    </div>
                 </div>
             </div>
         )
