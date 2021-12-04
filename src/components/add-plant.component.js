@@ -59,7 +59,7 @@ export default class AddPlant extends Component {
                 dateCreated:nowString,
                 planttype:this.state.planttype,
             });
-            this.props.history.push(`/dashboard`);
+            this.props.history.push(`/~t12r259/hydroclock/dashboard`);
         }
         else if (res.status === 500) {
             this.onMessageChange("Could not create account");
@@ -71,7 +71,7 @@ export default class AddPlant extends Component {
         e.preventDefault();
         let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype};
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/users/addplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post('https://csci331-backend.herokuapp.com/users/addplant/'+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {

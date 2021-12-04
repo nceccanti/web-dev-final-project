@@ -35,7 +35,7 @@ componentWillMount() {
                    {cards}
                     <div className="card text-center" style={{width:"20rem"}}>
                         <div className="card-body">
-                            <Link to="/addplant" style={{ textDecoration: 'none' }}>
+                            <Link to="/~t12r259/hydroclock/addplant" style={{ textDecoration: 'none' }}>
                                 <h4 className="card-title">Add New Plant</h4>
                                 <h1 className="card-text">+</h1>
                             </Link>

@@ -32,7 +32,7 @@ export default class Login extends Component {
         if (res.status === 200) {
             this.props.onUserAuthenticated(res.data.msg);
             localStorage.setItem("currentUser", res.data.msg.username);
-            this.props.history.push(`/dashboard`);
+            this.props.history.push(`/~t12r259/hydroclock/dashboard`);
         }
     }
     
@@ -40,7 +40,7 @@ export default class Login extends Component {
         e.preventDefault();
         
         // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
+        axios.post('https://csci331-backend.herokuapp.com/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
     }
   
     render() {

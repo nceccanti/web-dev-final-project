@@ -129,17 +129,17 @@ export default class App extends Component {
           <div className="container">
             <Navbar logout={this.logout} currentUser={this.state.currentUser}/>
 
-            <Route path="/home" component={Home} />
-            <Route path="/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants} getUserDataFromSession={this.getUserDataFromSession}/>)} />
-            <Route path="/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}
+            <Route path="/~t12r259/hydroclock/home" component={Home} />
+            <Route path="/~t12r259/hydroclock/dashboard" render={(props) => (<PlantList {...props} currentUser={this.state.currentUser} plants={this.state.plants} getUserDataFromSession={this.getUserDataFromSession}/>)} />
+            <Route path="/~t12r259/hydroclock/addplant" render={(props) => (<AddPlant {...props} currentUser={this.state.currentUser} addPlantToPlantList={this.addPlantToPlantList}
             plantTypes={plantTypes} getUserDataFromSession={this.getUserDataFromSession}/>)} />
-            <Route path="/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
+            <Route path="/~t12r259/hydroclock/deleteplant" render={(props) => (<DeletePlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
             deletePlantFromList={this.deletePlantFromList} getUserDataFromSession={this.getUserDataFromSession} plantTypes={plantTypes}/>)} />
-            <Route path="/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
+            <Route path="/~t12r259/hydroclock/editplant" render={(props) => (<EditPlant {...props} currentUser={this.state.currentUser} plants={this.state.plants}
             updatePlantInList={this.updatePlantInList} plantTypes={plantTypes} getUserDataFromSession={this.getUserDataFromSession}/>)} />
-            <Route path="/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
-            <Route path="/signup" render={(props) => (<SignUp {...props} />)} />
-            <Route path="/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser} getUserDataFromSession={this.getUserDataFromSession}/>)} />
+            <Route path="/~t12r259/hydroclock/login" render={(props) => (<Login {...props} onUserAuthenticated={this.onUserAuthenticated}/>)} />
+            <Route path="/~t12r259/hydroclock/signup" render={(props) => (<SignUp {...props} />)} />
+            <Route path="/~t12r259/hydroclock/profile" render={(props) => (<Profile {...props} user={this.state.currentUser} updateUser={this.updateUser} getUserDataFromSession={this.getUserDataFromSession}/>)} />
 
 
             <footer className="page-footer font-small">

@@ -46,7 +46,7 @@ export default class SignUp extends Component {
         e.preventDefault();
         console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE .then(res => this.onMessageChange(res.message))
-        axios.post('http://localhost:5005/api/auth/signup', this.state).then(res => {
+        axios.post('https://csci331-backend.herokuapp.com/api/auth/signup', this.state).then(res => {
             this.processResponse(res)
         }).catch(res =>{
             this.processResponse(res)
