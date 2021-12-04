@@ -19,6 +19,13 @@ export default class AddPlant extends Component {
         this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
     }
     
+    componentWillMount() {
+        if(null===this.props.currentUser) {
+            let sessionData=this.props.getUserDataFromSession();
+            this.setState({currentUser:sessionData.user});
+        }
+    }
+
     onMessageChange(message) {
         this.setState({msg: message})
     }
@@ -59,7 +66,6 @@ export default class AddPlant extends Component {
         }
         this.onMessageChange(res.data)
     }
-
 
     handleSubmit(e) {
         e.preventDefault();

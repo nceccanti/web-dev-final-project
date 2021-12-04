@@ -47,7 +47,7 @@ export default class Plant extends Component {
         let diff = Math.abs((addedUTC - currentUTC)/day);
         console.log(diff)
         let to = diff % daysto
-        if(diff == 0) {
+        if(diff === 0) {
             to = -1;
         }
         return to;
@@ -59,10 +59,10 @@ export default class Plant extends Component {
         let daystowater = this.state.daystowater;
         const dateCreated = this.state.dateCreated;
         const qString = "?plant=" + plantname;
-        if(daystowater == 0) {
+        if(daystowater === 0) {
             daystowater = "today!"
         }
-        if(daystowater == -1) {
+        if(daystowater === -1) {
             daystowater = wateringInterval
         }
 

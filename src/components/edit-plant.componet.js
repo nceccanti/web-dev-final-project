@@ -6,7 +6,7 @@ import '../index.css';
 export default class EditPlant extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
+        // console.log(this.props);
         let qName = this.props.location.search.replace("?plant=", "").replace("%20", " ");
         let plant = {plantname:"", daystowater:"", dateCreated:""};
 
@@ -34,6 +34,28 @@ export default class EditPlant extends Component {
         this.onPlantTypeChange = this.onPlantTypeChange.bind(this);
     }
     
+    componentWillMount() {
+        if(null===this.props.currentUser) {
+            let sessionData=this.props.getUserDataFromSession();
+            let plants = sessionData.plants;
+            let qName = this.props.location.search.replace("?plant=", "").replace("%20", " ");
+            let plant = {plantname:"", daystowater:"", dateCreated:""};
+
+            for(var i=0; i < plants.length; i++) {
+                if (plants[i].plantname===qName) {
+                    plant = plants[i];
+                    break;
+                }
+            }
+            this.setState({currentUser:sessionData.user});
+            this.setState({plantname:plant.plantname});
+            this.setState({oldplantname:plant.plantname});
+            this.setState({daystowater:plant.daystowater});
+            this.setState({dateCreated:plant.dateCreated});
+            this.setState({planttype:plant.planttype});
+        }
+    }
+
     onPlantNameChange(event) {
         this.setState({plantname: event.target.value});
     }
@@ -54,7 +76,7 @@ export default class EditPlant extends Component {
     }
 
     processResponse(res) {
-        if(res.status == 201) {
+        if(res.status === 201) {
             this.props.updatePlantInList({plantname: this.state.plantname,daystowater:this.state.daystowater,dateCreated:this.state.dateCreated,oldplantname:this.state.oldplantname,planttype:this.state.planttype})
             this.props.history.push(`/dashboard`);
         }
