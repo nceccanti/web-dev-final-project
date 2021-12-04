@@ -48,7 +48,7 @@ router.route('/update/:id').post([
   body('email').trim().isEmail().withMessage("Email must be a valid email.").normalizeEmail().toLowerCase(),
   body('username').trim().escape().isLength(3).withMessage("Username must have a minimum of 3 characters."),
   body('phone').trim().escape().custom((value, {req}) => {
-    let val = /^[\+]?[0-9]{11,13}$/;
+    let val = /^[\+]?[0-9]{11,14}$/;
     if(value.length == 0) {
       return true;
     }

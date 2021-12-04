@@ -63,7 +63,6 @@ function isWaterDay(id, name) {
 
 schedule.scheduleJob("* * * * *", () => {
   let now = "" + new Date().getUTCHours() + ":" + new Date().getUTCMinutes();
-  console.log(now);
   axios.get("http://localhost:5005/users/").then(res => {
     for(let i = 0; i < res.data.length; i++) {
       if(res.data[i].notifyTime == now && res.data[i].plants.length > 0 && (res.data[i].isEmail || res.data[i].isSMS)) {
@@ -96,7 +95,6 @@ function notifyUser(id) {
         notify.sendMail(res.data.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data.email + " successfully.")).catch(error => console.log(error.message));
         //console.log(bodyText);
       }
-      console.log(res.data.phone.length)
       if(res.data.isSMS && res.data.phone.length != 0) {
         notify.sendSMS(res.data.phone, bodyText).then(result => console.log("Text message sent to " + res.data.phone + " successfully.")).catch(error => console.log(error.message));
         //console.log("send SMS")

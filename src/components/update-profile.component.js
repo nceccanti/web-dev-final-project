@@ -120,8 +120,13 @@ export default class EditUser extends Component {
         let local = now.toLocaleTimeString()
         let localSplit = local.split(/[.,\/ :]/)
         let h = localSplit[0];
+
+        if(localSplit[localSplit.length - 1] == "PM") {
+            h = parseInt(h) + 12;
+        }
+
         if(h.length == 1) {
-            h = 0 + h
+            h = "0" + h
         }
         displayTime = h + ":" + localSplit[1]
         console.log(displayTime)
