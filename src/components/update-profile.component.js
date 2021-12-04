@@ -129,7 +129,12 @@ export default class EditUser extends Component {
         e.preventDefault();
         // console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
+<<<<<<< HEAD
         axios.post(`https://csci331-backend.herokuapp.com/users/update/`+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+=======
+        console.log(this.state)
+        axios.post('https://csci331-backend.herokuapp.com/users/update/'+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+>>>>>>> d57394b8dc51e0055a3fb15fd314485923881157
     }
 
     onTestNotifications = () => {
