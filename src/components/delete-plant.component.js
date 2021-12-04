@@ -84,14 +84,16 @@ export default class DeletePlant extends Component {
         const dateCreated = this.state.dateCreated;
 
         return (
-            <div>
+            <div className="login-container delete-plant">
                 <h3>Are you sure you want to delete this plant?</h3>
-                <p>Plant Name: {plantname}</p>
-                <p>Plant Type: {planttype}</p>
-                <p>Days til next water: {daystowater}</p>
-                <p>Date created: {dateCreated}</p>
-                <button onClick={this.handleConfirm} className="btn btn-warning">Confirm</button>
-                <button onClick={this.handleCancel} className="btn btn-secondary">Cancel</button>
+                <div className="delete-info padded-div-top-btm">
+                    <p>Plant Name: {plantname}</p>
+                    <p>Plant Type: {planttype}</p>
+                    <p>Days til next water: {daystowater}</p>
+                    <p>Date created: {dateCreated}</p>
+                    <button onClick={this.handleConfirm} className="btn btn-warning">Confirm</button>
+                    <button onClick={this.handleCancel} className="btn btn-secondary">Cancel</button>
+                </div>
             </div>
         )
     }

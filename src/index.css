@@ -54,6 +54,17 @@ code {
     margin: auto;
 }
 
+.delete-info {
+    background-color: #EDF5E1;
+    width: 66%;
+    margin: auto;
+    border-radius: 20px;
+}
+
+.delete-plant {
+    text-align: center;
+}
+
 .entered-info {
   padding-bottom: 55px;
 }
