@@ -54,7 +54,7 @@ function timeDifference(current, added) {
 //testing purposes only
 function isWaterDay(id, name) {
   let now = new Date();
-  const URL = `${back}/users/` + id
+  const URL = `https://hydroclock.herokuapp.com/users/` + id
   axios.get(URL).then(res => {
     for(let i = 0; i < res.data.plants.length; i++) {
       if(res.data.plants[i].plantname == name) {
@@ -67,7 +67,7 @@ function isWaterDay(id, name) {
 
 schedule.scheduleJob("* * * * *", () => {
   let now = "" + new Date().getUTCHours() + ":" + new Date().getUTCMinutes();
-  axios.get(`${back}/users/`).then(res => {
+  axios.get(`https://hydroclock.herokuapp.com/users/`).then(res => {
     for(let i = 0; i < res.data.length; i++) {
       if(res.data[i].notifyTime == now && res.data[i].plants.length > 0 && (res.data[i].isEmail || res.data[i].isSMS)) {
         notifyUser(res.data[i]._id);
@@ -78,7 +78,7 @@ schedule.scheduleJob("* * * * *", () => {
 
 function notifyUser(id) {
   let now = new Date();
-  let url = `${back}/users/` + id
+  let url = `https://hydroclock.herokuapp.com/users/` + id
   axios.get(url).then(res => {
       let plantText = "";
       let plantHTML = "";

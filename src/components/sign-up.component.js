@@ -46,7 +46,7 @@ export default class SignUp extends Component {
         e.preventDefault();
         console.log(this.state);
         const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`${back}/api/auth/signup`, this.state).then(res => {
+        axios.post(`https://hydroclock.herokuapp.com/api/auth/signup`, this.state).then(res => {
             this.processResponse(res)
         }).catch(res =>{
             this.processResponse(res)

@@ -50,7 +50,7 @@ class ContactUs extends Component {
         e.preventDefault();
         console.log(this.state);
         const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`${back}/contact`, this.state).then(res => console.log(res.data));
+        axios.post(`https://hydroclock.herokuapp.com/contact`, this.state).then(res => console.log(res.data));
         // sendMail('therambory@gmail.com', subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data[i].email + " successfully.")).catch(error => console.log(error.essage));
       }
     }

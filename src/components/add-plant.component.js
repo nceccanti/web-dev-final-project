@@ -71,7 +71,7 @@ export default class AddPlant extends Component {
         e.preventDefault();
         let rqst ={plantname: this.state.plantname,daystowater:this.state.daystowater,planttype:this.state.planttype};
         const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`${back}/users/addplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post(`https://hydroclock.herokuapp.com/users/addplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {

@@ -69,7 +69,7 @@ export default class DeletePlant extends Component {
         let rqst ={plants:[{plantname: this.state.plantname}]};
         // CONNECT TO BACKEND ENDPOINT HERE
         const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
-        axios.post(`${back}/users/removeplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        axios.post(`https://hydroclock.herokuapp.com/users/removeplant/`+this.state.currentUser._id, rqst).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
 
     handleCancel(e) {
