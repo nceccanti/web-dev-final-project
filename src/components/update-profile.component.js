@@ -7,11 +7,7 @@ export default class EditUser extends Component {
         super(props)
 
         let user = this.props.user;
-        if(null===this.props.user) {
-            let sessionData=this.props.getUserDataFromSession();
-            user = sessionData.user;
-        }
-        // console.log(this.props);
+        console.log(this.props);
 
         this.state = {
             username:user.username,
@@ -25,11 +21,6 @@ export default class EditUser extends Component {
             displayTime: "",
         }
 
-        let nTime = "12:00";
-        if(this.state.notifyTime) {
-            nTime = this.state.notifyTime;
-        }
-
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPhoneChange = this.onPhoneChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
@@ -37,32 +28,7 @@ export default class EditUser extends Component {
         this.onNotifyTimeChange = this.onNotifyTimeChange.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onIsSMSChange = this.onIsSMSChange.bind(this);
-        this.setState({displayTime: this.convertDisplay(nTime)})
-    }
-    
-    componentWillMount() {
-        if(null===this.props.user) {
-            let sessionData=this.props.getUserDataFromSession();
-            let user = sessionData.user;
-            let nTime = "12:00";
-            if(user.notifyTime) {
-                nTime = user.notifyTime;
-            }
-            else {
-                user.notifyTime = "";
-            }
-            this.setState({plants:sessionData.plants});
-            this.setState({username:user.username});
-            this.setState({_id:user._id});
-            this.setState({email:user.email});
-            this.setState({phone:user.phone});
-            this.setState({notifyTime:user.notifyTime});
-            this.setState({isEmail:user.isEmail});
-            this.setState({isSMS:user.isSMS});
-            // this.setState({displayTime: ""});
-            this.setState({displayTime: this.convertDisplay(nTime)})
-            // console.log(this.state);
-        }
+        this.setState({displayTime: this.convertDisplay(this.state.notifyTime)})
     }
 
     onUsernameChange(event) {
@@ -97,10 +63,10 @@ export default class EditUser extends Component {
         let utc = time.split(/[.,\/ :]/)
         let h = utc[0];
         let m = utc[1];
-        if(h.length === 1) {
+        if(h.length == 1) {
             h = "0" + h
         }
-        if(m.length === 1) {
+        if(m.length == 1) {
             m = "0" + m
         }
         let comp = h + ":" + m;
@@ -154,8 +120,13 @@ export default class EditUser extends Component {
         let local = now.toLocaleTimeString()
         let localSplit = local.split(/[.,\/ :]/)
         let h = localSplit[0];
-        if(h.length === 1) {
-            h = 0 + h
+
+        if(localSplit[localSplit.length - 1] == "PM") {
+            h = parseInt(h) + 12;
+        }
+
+        if(h.length == 1) {
+            h = "0" + h
         }
         displayTime = h + ":" + localSplit[1]
         console.log(displayTime)
