@@ -98,8 +98,8 @@ export default class EditUser extends Component {
         e.preventDefault();
         // console.log(this.state);
         // CONNECT TO BACKEND ENDPOINT HERE
-        console.log(this.state)
-        axios.post('http://localhost:5005/users/update/'+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
+        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
+        axios.post(`${back}/users/update/`+this.props.user._id, this.state).then(res => this.processResponse(res)).catch(res => this.processResponse(res));
     }
   
     render() {

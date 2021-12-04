@@ -39,8 +39,8 @@ export default class Login extends Component {
     handleSubmit(e) {
         e.preventDefault();
         
-        // CONNECT TO BACKEND ENDPOINT HERE
-        axios.post('http://localhost:5005/api/auth/login', this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
+        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
+        axios.post(`${back}/api/auth/login`, this.state).then(res => this.processResponse(res)).catch(res => {this.onAuthenticationFailed(res)});
     }
   
     render() {

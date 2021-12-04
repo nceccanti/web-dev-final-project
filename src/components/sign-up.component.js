@@ -45,8 +45,8 @@ export default class SignUp extends Component {
     handleSubmit(e) {
         e.preventDefault();
         console.log(this.state);
-        // CONNECT TO BACKEND ENDPOINT HERE .then(res => this.onMessageChange(res.message))
-        axios.post('http://localhost:5005/api/auth/signup', this.state).then(res => {
+        const back = process.env.NODE_ENV === 'production' ? 'https://hydroclock.herokuapp.com/' : 'http://localhost:5005';
+        axios.post(`${back}/api/auth/signup`, this.state).then(res => {
             this.processResponse(res)
         }).catch(res =>{
             this.processResponse(res)

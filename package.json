@@ -2,7 +2,6 @@
   "name": "hydro",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://csci331.cs.montana.edu/~x44r941/hydroclock/",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@popperjs/core": "^2.11.0",
