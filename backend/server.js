@@ -7,21 +7,8 @@ const schedule = require("node-schedule");
 const axios = require("axios");
 const multer = require('multer');
 const path = require("path");
+const notify = require('./notify')
 require("dotenv").config();
-
-const CLIENT_ID = process.env.CLIENT_ID_KEY;
-const CLIENT_SECRET = process.env.CLIENT_SECRET_KEY;
-const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN_KEY;
-const HYDROCLOCK_EMAIL = "officialhydroclock@gmail.com";
-
-const SID = process.env.SID_KEY;
-const AUTH_TOKEN = process.env.AUTH_TOKEN_KEY;
-const client = require("twilio")(SID, AUTH_TOKEN)
-const HYDROCLOCK_PHONE = "+18507878234";
-
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
-oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
 require('dotenv').config();
 
@@ -86,48 +73,6 @@ schedule.scheduleJob("* * * * *", () => {
   })
 })
 
-async function sendMail(client, subjectBody, textBody, htmlBody) {
-  try {
-    const accessToken = await oAuth2Client.getAccessToken();
-    const transport = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: HYDROCLOCK_EMAIL,
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken
-      }
-    })
-
-    const mailOptions = {
-      from: HYDROCLOCK_EMAIL,
-      to: client,
-      subject: subjectBody,
-      text: textBody,
-      html: htmlBody
-    };
-
-    const result = transport.sendMail(mailOptions)
-    return result;
-
-  } catch (error) {
-    console.log(error)
-    return error
-  }
-}
-
-async function sendSMS(userNumber, bodyText) {
-  client.messages
-    .create({
-      to: userNumber,
-      from: HYDROCLOCK_PHONE,
-      body: bodyText
-    })
-  .then(message => console.log(message.sid));
-}
-
 function notifyUser(id) {
   let now = new Date();
   let url = "http://localhost:5005/users/" + id
@@ -148,13 +93,14 @@ function notifyUser(id) {
       bodyHTML = "<h1>Hello " + res.data.username + "!</h1><h2>This is your daily reminder water your plants!</h2><h3>Here is your watering details for each plant:<h3><ul>" + plantHTML + "</ul><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>";
       subject = res.data.username + ": plant watering reminder.";
       if(res.data.isEmail) {
-        sendMail(res.data.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data.email + " successfully.")).catch(error => console.log(error.message));
+        notify.sendMail(res.data.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.data.email + " successfully.")).catch(error => console.log(error.message));
         //console.log(bodyText);
       }
       console.log(res.data.phone.length)
       if(res.data.isSMS && res.data.phone.length != 0) {
-        sendSMS(res.data.phone, bodyText).then(result => console.log("Text message sent to " + res.data.phone + " successfully.")).catch(error => console.log(error.message));
+        notify.sendSMS(res.data.phone, bodyText).then(result => console.log("Text message sent to " + res.data.phone + " successfully.")).catch(error => console.log(error.message));
         //console.log("send SMS")
       }
   });
 }
+

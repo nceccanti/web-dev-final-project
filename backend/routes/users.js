@@ -5,34 +5,9 @@ const { body, validationResult } = require('express-validator');
 const multer = require('multer');
 const path = require("path");
 const express = require('express');
+const notify = require('../notify');
 
 
-const storage = multer.diskStorage({
-  destination: "./../public/img/",
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(fiel.originalname));
-  }
-})
-
-const upload = multer({
-  storage: storage,
-  limits:{filesize: 1000000},
-  fileFilter: function(req, file, cb) {
-    checkFileType(file, cb)
-  }
-}).single('uploadImage');
-
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/
-  const extname = filetypes.test(path.extname(fiel.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if(mimetype && extname) {
-    return cb(null,true)
-  } else {
-    cb("Error: Images only")
-  }
-}
 
 router.route('/').get((req, res) => {
   User.find()
@@ -196,6 +171,23 @@ router.route('/removeplant/:id').post((req, res) => {
     })
     .catch(err => res.status(400).json("Error: " + err));
 });
+
+router.route("/notify/:id").post((req, res) => {
+  User.findById(req.params.id).then(res => {
+    let subject = "HydroClock Notication Test"
+    let bodyText = "Hello " + res.username + "!\n\n Your notifications are working correctly!\n\n Have a great day!\nSincerely,\nThe HydroClock Team" 
+    let bodyHTML = "<h1>Hello " + res.username + "!<h1><br><p>Your notifications are working correctly!</p><br><p>Have a great day!</p><p>Sincerely,</p><p>The HydroClock Team</p>"
+    if(res.isEmail && res.email.length > 0) {
+      notify.sendMail(res.email, subject, bodyText, bodyHTML).then(result => console.log("Email sent to " + res.email + " successfully.")).catch(error => console.log(error.message));
+    }
+    if(res.isSMS  && res.phone.length > 0) {
+      notify.sendSMS(res.phone, bodyText).then(result => console.log("Text message sent to " + res.phone + " successfully.")).catch(error => console.log(error.message));
+    }
+  }).catch(err => res.status(400).json("Error: " + err));
+  if(res.status != 400) {
+    res.json({message: "Notification sent!"})
+  }
+})
 
 router.route('/updateplant/:id').post([
   body('plantname').trim().escape().isLength(2).withMessage("Plantname must have a minimum of 1 character."),
